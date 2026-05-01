@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DockerLab — Container Engineering by EknathaLabs</title>
+<meta name="description" content="Master Docker with hands-on labs, AI-powered tools, Dockerfile linter, image analyzer, compose explainer and more. Built by Engineer.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #0a0c0f;
+    --bg2:       #0f1217;
+    --bg3:       #161b22;
+    --surface:   #1c2230;
+    --border:    #1e2a38;
+    --border2:   #263345;
+    --docker:    #1D63ED;
+    --docker-l:  #4d8ef5;
+    --orange:    #F7941D;
+    --orange-l:  #ffb347;
+    --green:     #23d18b;
+    --red:       #ff5f57;
+    --yellow:    #febc2e;
+    --text:      #e2e8f0;
+    --muted:     #7c8fa8;
+    --mono:      'IBM Plex Mono', monospace;
+    --display:   'Syne', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  ::selection { background: var(--docker); color: #fff; }
+
+  /* ── GRID NOISE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(29,99,237,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(29,99,237,0.03) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2.5rem;
+    height: 58px;
+    background: rgba(10,12,15,0.85);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .nav-logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--display); font-weight: 800; font-size: 18px;
+    color: var(--text); text-decoration: none;
+  }
+
+  .nav-logo .whale {
+    width: 32px; height: 32px;
+    background: var(--docker);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+
+  .nav-links {
+    display: flex; align-items: center; gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    color: var(--muted); text-decoration: none; font-size: 12px;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text); }
+
+  .nav-badge {
+    font-size: 11px; padding: 3px 10px;
+    background: rgba(29,99,237,0.15);
+    color: var(--docker-l);
+    border: 1px solid rgba(29,99,237,0.3);
+    border-radius: 20px;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative; z-index: 1;
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    padding: 6rem 2rem 4rem;
+    text-align: center;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    width: 700px; height: 700px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(29,99,237,0.12) 0%, transparent 65%);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--docker-l); margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 0.6s 0.1s ease forwards;
+  }
+
+  .hero-title {
+    font-family: var(--display);
+    font-size: clamp(3rem, 8vw, 6.5rem);
+    font-weight: 800;
+    line-height: 0.95;
+    letter-spacing: -0.03em;
+    margin-bottom: 1.5rem;
+    opacity: 0; animation: fadeUp 0.6s 0.2s ease forwards;
+  }
+
+  .hero-title .accent { color: var(--docker); }
+  .hero-title .whale-emoji { display: inline-block; animation: bob 3s ease-in-out infinite; }
+
+  .hero-sub {
+    max-width: 520px;
+    font-size: 14px; color: var(--muted); line-height: 1.8;
+    margin-bottom: 2.5rem;
+    opacity: 0; animation: fadeUp 0.6s 0.3s ease forwards;
+  }
+
+  .hero-ctas {
+    display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;
+    opacity: 0; animation: fadeUp 0.6s 0.4s ease forwards;
+    margin-bottom: 3.5rem;
+  }
+
+  .btn-primary {
+    padding: 12px 28px; border-radius: 8px;
+    background: var(--docker); color: #fff;
+    font-family: var(--mono); font-size: 13px; font-weight: 500;
+    border: none; cursor: pointer; text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+
+  .btn-primary:hover { background: var(--docker-l); transform: translateY(-2px); }
+
+  .btn-ghost {
+    padding: 12px 28px; border-radius: 8px;
+    background: transparent; color: var(--text);
+    font-family: var(--mono); font-size: 13px;
+    border: 1px solid var(--border2); cursor: pointer; text-decoration: none;
+    transition: border-color 0.2s, transform 0.15s;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+
+  .btn-ghost:hover { border-color: var(--muted); transform: translateY(-2px); }
+
+  /* ── TERMINAL HERO ── */
+  .hero-terminal {
+    width: 100%; max-width: 680px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    opacity: 0; animation: fadeUp 0.6s 0.5s ease forwards;
+    text-align: left;
+  }
+
+  .terminal-bar {
+    display: flex; align-items: center; gap: 8px;
+    padding: 10px 16px;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .dot { width: 12px; height: 12px; border-radius: 50%; }
+  .dot-r { background: var(--red); }
+  .dot-y { background: var(--yellow); }
+  .dot-g { background: var(--green); }
+
+  .terminal-title {
+    flex: 1; text-align: center;
+    font-size: 12px; color: var(--muted);
+  }
+
+  .terminal-body { padding: 20px 24px; line-height: 2; }
+
+  .t-prompt { color: var(--docker-l); }
+  .t-cmd    { color: var(--text); }
+  .t-out    { color: var(--muted); display: block; padding-left: 1rem; }
+  .t-ok     { color: var(--green); }
+  .t-warn   { color: var(--orange); }
+  .t-cursor {
+    display: inline-block; width: 9px; height: 16px;
+    background: var(--docker-l); vertical-align: middle;
+    animation: blink 1.1s step-end infinite;
+  }
+
+  /* ── STATS BAR ── */
+  .stats-bar {
+    position: relative; z-index: 1;
+    display: flex; justify-content: center; gap: 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    background: var(--bg2);
+    overflow-x: auto;
+  }
+
+  .stat-item {
+    flex: 1; min-width: 140px;
+    padding: 1.5rem 2rem;
+    text-align: center;
+    border-right: 1px solid var(--border);
+  }
+
+  .stat-item:last-child { border-right: none; }
+
+  .stat-num {
+    font-family: var(--display); font-size: 2.2rem; font-weight: 800;
+    color: var(--docker); line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .stat-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+  /* ── SECTION ── */
+  section { position: relative; z-index: 1; padding: 5rem 2rem; }
+
+  .section-inner { max-width: 1100px; margin: 0 auto; }
+
+  .section-header { margin-bottom: 3rem; }
+
+  .section-tag {
+    font-size: 11px; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--orange); margin-bottom: 0.75rem;
+  }
+
+  .section-title {
+    font-family: var(--display); font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 800; line-height: 1.1; letter-spacing: -0.02em;
+  }
+
+  /* ── FEATURE GRID ── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+  }
+
+  .feature-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px;
+    transition: border-color 0.2s, transform 0.2s;
+    cursor: default;
+  }
+
+  .feature-card:hover {
+    border-color: var(--docker);
+    transform: translateY(-4px);
+  }
+
+  .feature-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    background: rgba(29,99,237,0.12);
+    border: 1px solid rgba(29,99,237,0.25);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; margin-bottom: 16px;
+  }
+
+  .feature-title {
+    font-family: var(--display); font-size: 1rem; font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .feature-desc { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+  .feature-badge {
+    display: inline-block; margin-top: 12px;
+    font-size: 10px; padding: 3px 10px;
+    border-radius: 20px; letter-spacing: 0.05em;
+  }
+
+  .badge-live { background: rgba(35,209,139,0.12); color: var(--green); border: 1px solid rgba(35,209,139,0.25); }
+  .badge-soon { background: rgba(247,148,29,0.12); color: var(--orange); border: 1px solid rgba(247,148,29,0.25); }
+
+  /* ── TOOLS SECTION ── */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 12px;
+  }
+
+  .tool-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 22px;
+    display: flex; align-items: flex-start; gap: 14px;
+    transition: border-color 0.2s, background 0.2s;
+    text-decoration: none; color: inherit;
+    cursor: pointer;
+  }
+
+  .tool-card:hover {
+    border-color: var(--border2);
+    background: var(--surface);
+  }
+
+  .tool-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: rgba(247,148,29,0.1);
+    border: 1px solid rgba(247,148,29,0.2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 17px; flex-shrink: 0;
+  }
+
+  .tool-info { flex: 1; }
+
+  .tool-name { font-size: 13px; font-weight: 600; margin-bottom: 4px; color: var(--text); }
+
+  .tool-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  /* ── CONCEPTS GRID ── */
+  .concepts-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+  }
+
+  .concept-pill {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 18px;
+    display: flex; align-items: center; gap: 10px;
+    transition: border-color 0.2s;
+    cursor: default;
+  }
+
+  .concept-pill:hover { border-color: var(--docker); }
+
+  .concept-num {
+    font-family: var(--display); font-size: 11px; font-weight: 700;
+    color: var(--docker); min-width: 22px;
+  }
+
+  .concept-text { font-size: 12px; color: var(--text); }
+
+  /* ── LINTER DEMO ── */
+  .linter-demo {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+
+  .linter-header {
+    padding: 14px 20px;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; gap: 8px;
+    font-size: 12px; color: var(--muted);
+  }
+
+  .linter-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 700px) {
+    .linter-body { grid-template-columns: 1fr; }
+  }
+
+  .linter-pane {
+    padding: 20px 24px;
+    min-height: 280px;
+  }
+
+  .linter-pane:first-child { border-right: 1px solid var(--border); }
+
+  .linter-pane label { display: block; font-size: 11px; color: var(--muted); margin-bottom: 10px; letter-spacing: 0.05em; }
+
+  .linter-pane textarea {
+    width: 100%; background: transparent; border: none;
+    color: var(--text); font-family: var(--mono); font-size: 13px;
+    resize: none; outline: none; line-height: 1.8;
+    height: 200px;
+  }
+
+  .issue-item {
+    display: flex; gap: 10px; align-items: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 12px;
+  }
+
+  .issue-item:last-child { border-bottom: none; }
+
+  .issue-sev {
+    font-size: 10px; padding: 2px 7px; border-radius: 4px;
+    font-weight: 600; flex-shrink: 0;
+  }
+
+  .sev-warn { background: rgba(247,148,29,0.15); color: var(--orange); }
+  .sev-err  { background: rgba(255,95,87,0.15); color: var(--red); }
+  .sev-ok   { background: rgba(35,209,139,0.15); color: var(--green); }
+
+  .issue-text { color: var(--muted); line-height: 1.5; }
+  .issue-text strong { color: var(--text); font-weight: 500; }
+
+  .linter-footer {
+    padding: 12px 20px;
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .score-bar { display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--muted); }
+
+  .score-val { font-family: var(--display); font-size: 1.4rem; font-weight: 800; color: var(--orange); }
+
+  /* ── QUIZ SECTION ── */
+  .quiz-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    max-width: 700px; margin: 0 auto;
+  }
+
+  .quiz-header {
+    padding: 16px 24px;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .quiz-progress {
+    font-size: 12px; color: var(--muted);
+  }
+
+  .quiz-xp {
+    font-size: 12px; color: var(--orange);
+  }
+
+  .quiz-body { padding: 28px 24px; }
+
+  .quiz-q {
+    font-family: var(--display); font-size: 1.1rem; font-weight: 700;
+    margin-bottom: 20px; line-height: 1.4;
+  }
+
+  .quiz-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
+
+  .quiz-opt {
+    padding: 12px 16px;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer; font-size: 13px;
+    transition: border-color 0.15s, background 0.15s;
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .quiz-opt:hover { border-color: var(--docker); }
+  .quiz-opt.correct { border-color: var(--green); background: rgba(35,209,139,0.08); color: var(--green); }
+  .quiz-opt.wrong   { border-color: var(--red);   background: rgba(255,95,87,0.08);  color: var(--red); }
+
+  .opt-key {
+    width: 22px; height: 22px; border-radius: 4px;
+    background: var(--surface); border: 1px solid var(--border2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px; color: var(--muted); flex-shrink: 0;
+  }
+
+  .quiz-explanation {
+    font-size: 12px; color: var(--muted); line-height: 1.7;
+    padding: 14px; background: var(--bg3); border-radius: 8px;
+    border-left: 3px solid var(--docker);
+    display: none;
+  }
+
+  /* ── CHEATSHEET ── */
+  .cheat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  .cheat-card {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .cheat-cat {
+    padding: 10px 16px;
+    background: var(--bg3);
+    border-bottom: 1px solid var(--border);
+    font-size: 11px; color: var(--docker-l); letter-spacing: 0.08em; text-transform: uppercase;
+  }
+
+  .cheat-list { padding: 8px 0; }
+
+  .cheat-item {
+    display: flex; align-items: baseline;
+    padding: 8px 16px; gap: 12px;
+    transition: background 0.15s;
+    cursor: pointer;
+  }
+
+  .cheat-item:hover { background: var(--surface); }
+
+  .cheat-cmd { color: var(--orange-l); font-size: 12px; white-space: nowrap; flex-shrink: 0; }
+
+  .cheat-desc { font-size: 12px; color: var(--muted); flex: 1; }
+
+  .copied-tag {
+    font-size: 10px; color: var(--green); opacity: 0;
+    transition: opacity 0.3s;
+  }
+
+  /* ── LEARNING PATH ── */
+  .path-list { max-width: 700px; }
+
+  .path-item {
+    display: flex; gap: 20px; align-items: flex-start;
+    padding-bottom: 2rem;
+    position: relative;
+  }
+
+  .path-item::before {
+    content: '';
+    position: absolute;
+    left: 19px; top: 40px;
+    width: 2px; height: calc(100% - 10px);
+    background: linear-gradient(to bottom, var(--docker), transparent);
+  }
+
+  .path-item:last-child::before { display: none; }
+
+  .path-num {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--display); font-size: 14px; font-weight: 800;
+    color: var(--docker); flex-shrink: 0;
+    position: relative; z-index: 1;
+  }
+
+  .path-content { flex: 1; padding-top: 8px; }
+
+  .path-title { font-family: var(--display); font-weight: 700; font-size: 1rem; margin-bottom: 4px; }
+
+  .path-desc { font-size: 12px; color: var(--muted); line-height: 1.6; }
+
+  .path-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+
+  .path-tag {
+    font-size: 10px; padding: 2px 8px;
+    background: var(--bg3); border: 1px solid var(--border);
+    border-radius: 4px; color: var(--muted);
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    position: relative; z-index: 1;
+    border-top: 1px solid var(--border);
+    padding: 2rem 2.5rem;
+    display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 1rem;
+    background: var(--bg2);
+  }
+
+  .footer-logo {
+    font-family: var(--display); font-size: 15px; font-weight: 800;
+    color: var(--text);
+  }
+
+  .footer-links { display: flex; gap: 1.5rem; }
+
+  .footer-links a { font-size: 12px; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+
+  .footer-links a:hover { color: var(--text); }
+
+  .footer-copy { font-size: 11px; color: var(--muted); }
+
+  /* ── SCROLL-REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.5s, transform 0.5s; }
+  .reveal.visible { opacity: 1; transform: none; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: none; }
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+
+  @keyframes bob {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-6px); }
+  }
+
+  /* ── MOBILE ── */
+  @media (max-width: 640px) {
+    nav { padding: 0 1.25rem; }
+    .nav-links { display: none; }
+    .hero { padding: 5rem 1.25rem 3rem; }
+    section { padding: 3.5rem 1.25rem; }
+    footer { padding: 1.5rem 1.25rem; flex-direction: column; }
+    .stat-item { min-width: 110px; padding: 1rem 1.25rem; }
+    .stat-num { font-size: 1.8rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <span class="whale">🐳</span>
+    DockerLab
+  </a>
+  <ul class="nav-links">
+    <li><a href="#tools">Tools</a></li>
+    <li><a href="#learn">Learn</a></li>
+    <li><a href="#cheatsheet">Cheatsheet</a></li>
+    <li><a href="#quiz">Quiz</a></li>
+    <li><a href="https://eknathalabs.com" target="_blank">EknathaLabs ↗</a></li>
+  </ul>
+  <span class="nav-badge">Free · No signup</span>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">// docker.eknathalabs.com &nbsp;—&nbsp; Built by  Engineer</p>
+
+  <h1 class="hero-title">
+    Master<br>
+    <span class="accent">Container</span><br>
+    Engineering <span class="whale-emoji">🐳</span>
+  </h1>
+
+  <p class="hero-sub">
+    From your first <code>docker run</code> to production-grade multi-stage builds.
+    AI-powered tools, interactive labs, a 100-question quiz, and a complete cheatsheet.
+  </p>
+
+  <div class="hero-ctas">
+    <a href="#learn" class="btn-primary">▶ Start Learning</a>
+    <a href="#tools" class="btn-ghost">⚙ AI Tools</a>
+    <a href="#cheatsheet" class="btn-ghost">⌘ Cheatsheet</a>
+  </div>
+
+  <div class="hero-terminal">
+    <div class="terminal-bar">
+      <span class="dot dot-r"></span>
+      <span class="dot dot-y"></span>
+      <span class="dot dot-g"></span>
+      <span class="terminal-title">docker ~ container lifecycle</span>
+    </div>
+    <div class="terminal-body">
+      <div>
+        <span class="t-prompt">eknatha@dockerlab $</span>
+        <span class="t-cmd"> docker build -t myapp:v2.1 --no-cache .</span>
+      </div>
+      <span class="t-out t-ok">✓ Step 1/8: FROM node:20-alpine</span>
+      <span class="t-out t-ok">✓ Step 2/8: WORKDIR /app</span>
+      <span class="t-out t-ok">✓ Step 3/8: COPY package*.json ./</span>
+      <span class="t-out t-ok">✓ Step 4/8: RUN npm ci --only=production</span>
+      <span class="t-out t-warn">⚠ Step 5/8: COPY . . — Consider .dockerignore (node_modules: 142MB)</span>
+      <span class="t-out t-ok">✓ Successfully built b3a9f7c1d2e4</span>
+      <span class="t-out t-ok">✓ Tagged: myapp:v2.1 (Final size: 287MB → 94MB optimized)</span>
+      <div style="margin-top:8px">
+        <span class="t-prompt">eknatha@dockerlab $</span>
+        <span class="t-cmd"> docker run --rm -p 3000:3000 myapp:v2.1</span>
+      </div>
+      <span class="t-out t-ok">✓ Container started · http://localhost:3000</span>
+      <div style="margin-top:4px">
+        <span class="t-prompt">eknatha@dockerlab $</span>
+        <span class="t-cursor"></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat-item">
+    <div class="stat-num">10</div>
+    <div class="stat-label">Modules</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">8</div>
+    <div class="stat-label">AI Tools</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">150+</div>
+    <div class="stat-label">Commands</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">100</div>
+    <div class="stat-label">Quiz Q&amp;A</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num">Free</div>
+    <div class="stat-label">Always</div>
+  </div>
+</div>
+
+<!-- FEATURES -->
+<section id="learn">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <p class="section-tag">// 01 — Modules</p>
+      <h2 class="section-title">Everything from basics<br>to production-grade</h2>
+    </div>
+    <div class="features-grid">
+
+      <div class="feature-card reveal">
+        <div class="feature-icon">📦</div>
+        <div class="feature-title">Container Fundamentals</div>
+        <div class="feature-desc">Namespaces, cgroups, union filesystems. How Docker really works under the hood.</div>
+        <span class="feature-badge badge-live">Live</span>
+      </div>
+
+      <div class="feature-card reveal">
+        <div class="feature-icon">🏗️</div>
+        <div class="feature-title">Dockerfile Mastery</div>
+        <div class="feature-desc">Layer caching, multi-stage builds, BuildKit, ARG vs ENV, COPY vs ADD.</div>
+        <span class="feature-badge badge-live">Live</span>
+      </div>
+
+      <div class="feature-card reveal">
+        <div class="feature-icon">🌐</div>
+        <div class="feature-title">Networking Deep Dive</div>
+        <div class="feature-desc">Bridge, host, overlay, macvlan networks. Port mapping, DNS, container-to-container comms.</div>
+        <span class="feature-badge badge-live">Live</span>
+      </div>
+
+      <div class="feature-card reveal">
+        <div class="feature-icon">💾</div>
+        <div class="feature-title">Volumes &amp; Storage</div>
+        <div class="feature-desc">Bind mounts vs volumes vs tmpfs. Persistent data, backup strategies, permissions.</div>
+        <span class="feature-badge badge-live">Live</span>
+      </div>
+
+      <div class="feature-card reveal">
+        <div class="feature-icon">🎼</div>
+        <div class="feature-title">Docker Compose</div>
+        <div class="feature-desc">Multi-service apps, depends_on, health checks, profiles, secrets, override files.</div>
+        <span class="feature-badge badge-live">Live</span>
+      </div>
+
+      <div class="feature-card reveal">
+        <div class="feature-icon">🔒</div>
+        <div class="feature-title">Container Security</div>
+        <div class="feature-desc">Non-root users, read-only filesystems, seccomp, AppArmor, image scanning with Trivy.</div>
+        <span class="feature-badge badge-soon">Coming soon</span>
+      </div>
+
+      <div class="feature-card reveal">
+        <div class="feature-icon">📊</div>
+        <div class="feature-title">Image Optimization</div>
+        <div class="feature-desc">Slim base images, .dockerignore, layer squashing, Dive analysis, size benchmarks.</div>
+        <span class="feature-badge badge-soon">Coming soon</span>
+      </div>
+
+      <div class="feature-card reveal">
+        <div class="feature-icon">🚀</div>
+        <div class="feature-title">CI/CD with Docker</div>
+        <div class="feature-desc">GitHub Actions pipelines, GHCR, ECR push, build caching in CI, multi-platform builds.</div>
+        <span class="feature-badge badge-soon">Coming soon</span>
+      </div>
+
+      <div class="feature-card reveal">
+        <div class="feature-icon">⚙️</div>
+        <div class="feature-title">Production Patterns</div>
+        <div class="feature-desc">Resource limits, restart policies, logging drivers, health checks, graceful shutdown.</div>
+        <span class="feature-badge badge-soon">Coming soon</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- AI TOOLS -->
+<section id="tools" style="background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <p class="section-tag">// 02 — AI-Powered Tools</p>
+      <h2 class="section-title">8 tools built for<br>container engineers</h2>
+    </div>
+    <div class="tools-grid">
+
+      <div class="tool-card reveal">
+        <div class="tool-icon">🔍</div>
+        <div class="tool-info">
+          <div class="tool-name">Dockerfile Linter</div>
+          <div class="tool-desc">Paste any Dockerfile → get security, performance &amp; best-practice issues instantly</div>
+        </div>
+      </div>
+
+      <div class="tool-card reveal">
+        <div class="tool-icon">📖</div>
+        <div class="tool-info">
+          <div class="tool-name">Dockerfile Explainer</div>
+          <div class="tool-desc">AI breaks down every instruction line-by-line with context and alternatives</div>
+        </div>
+      </div>
+
+      <div class="tool-card reveal">
+        <div class="tool-icon">🎼</div>
+        <div class="tool-info">
+          <div class="tool-name">Compose Explainer</div>
+          <div class="tool-desc">Paste compose.yaml → understand services, dependencies and networking visually</div>
+        </div>
+      </div>
+
+      <div class="tool-card reveal">
+        <div class="tool-icon">📉</div>
+        <div class="tool-info">
+          <div class="tool-name">Image Size Analyzer</div>
+          <div class="tool-desc">Layer-by-layer breakdown with optimization suggestions to shrink your image</div>
+        </div>
+      </div>
+
+      <div class="tool-card reveal">
+        <div class="tool-icon">🛠️</div>
+        <div class="tool-info">
+          <div class="tool-name">Dockerfile Generator</div>
+          <div class="tool-desc">Describe your app → get a production-ready, optimized Dockerfile instantly</div>
+        </div>
+      </div>
+
+      <div class="tool-card reveal">
+        <div class="tool-icon">🐛</div>
+        <div class="tool-info">
+          <div class="tool-name">Error Troubleshooter</div>
+          <div class="tool-desc">Paste docker error output → AI diagnoses root cause &amp; gives fix steps</div>
+        </div>
+      </div>
+
+      <div class="tool-card reveal">
+        <div class="tool-icon">🌐</div>
+        <div class="tool-info">
+          <div class="tool-name">Network Visualizer</div>
+          <div class="tool-desc">Input compose or run commands → see network topology and connectivity map</div>
+        </div>
+      </div>
+
+      <div class="tool-card reveal">
+        <div class="tool-icon">🔒</div>
+        <div class="tool-info">
+          <div class="tool-name">Security Auditor</div>
+          <div class="tool-desc">Scan Dockerfile for security misconfigs: root user, exposed ports, vulnerable bases</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- LINTER DEMO -->
+<section>
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <p class="section-tag">// 03 — Live Preview</p>
+      <h2 class="section-title">Dockerfile Linter</h2>
+    </div>
+    <div class="linter-demo reveal">
+      <div class="linter-header">
+        <span>📄</span>
+        <span>Dockerfile · AI-powered analysis</span>
+      </div>
+      <div class="linter-body">
+        <div class="linter-pane">
+          <label>PASTE YOUR DOCKERFILE</label>
+          <textarea id="df-input" spellcheck="false" placeholder="FROM ubuntu:latest&#10;RUN apt-get update&#10;COPY . .&#10;RUN npm install&#10;CMD node app.js">FROM ubuntu:latest
+RUN apt-get update && apt-get install -y nodejs npm
+COPY . .
+RUN npm install
+EXPOSE 3000
+CMD node app.js</textarea>
+        </div>
+        <div class="linter-pane" id="lint-output">
+          <label>ISSUES DETECTED</label>
+          <div id="issues-list">
+            <div class="issue-item">
+              <span class="issue-sev sev-err">ERROR</span>
+              <span class="issue-text"><strong>Line 1:</strong> Using <code>ubuntu:latest</code> is unpredictable. Pin to a specific digest or use <code>ubuntu:22.04</code></span>
+            </div>
+            <div class="issue-item">
+              <span class="issue-sev sev-warn">WARN</span>
+              <span class="issue-text"><strong>Line 1:</strong> <code>ubuntu</code> is 77MB. Consider <code>node:20-alpine</code> (7MB) for Node.js apps</span>
+            </div>
+            <div class="issue-item">
+              <span class="issue-sev sev-warn">WARN</span>
+              <span class="issue-text"><strong>Line 3:</strong> <code>COPY . .</code> before <code>npm install</code> busts cache on every code change. Copy <code>package*.json</code> first</span>
+            </div>
+            <div class="issue-item">
+              <span class="issue-sev sev-err">ERROR</span>
+              <span class="issue-text"><strong>Line 6:</strong> No user specified — container runs as <code>root</code>. Add <code>USER node</code> before CMD</span>
+            </div>
+            <div class="issue-item">
+              <span class="issue-sev sev-ok">INFO</span>
+              <span class="issue-text"><strong>Missing:</strong> No <code>.dockerignore</code> detected. Add one to exclude <code>node_modules</code>, <code>.git</code></span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="linter-footer">
+        <div class="score-bar">
+          <span>Score:</span>
+          <span class="score-val">34/100</span>
+          <span style="color:var(--red)">● Needs work</span>
+        </div>
+        <button class="btn-primary" onclick="analyzeDf()" style="font-size:12px;padding:8px 18px;">⚡ Analyze</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- QUIZ -->
+<section id="quiz" style="background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+  <div class="section-inner">
+    <div class="section-header reveal" style="text-align:center">
+      <p class="section-tag" style="text-align:center">// 04 — Quiz</p>
+      <h2 class="section-title">100 Docker Q&amp;A</h2>
+    </div>
+    <div class="quiz-card reveal">
+      <div class="quiz-header">
+        <span class="quiz-progress" id="q-progress">Question 1 of 100</span>
+        <span class="quiz-xp" id="q-xp">⚡ 0 XP</span>
+      </div>
+      <div class="quiz-body">
+        <div class="quiz-q" id="q-text">What is the difference between CMD and ENTRYPOINT in a Dockerfile?</div>
+        <div class="quiz-options" id="q-opts">
+          <div class="quiz-opt" onclick="answer(this,false)">
+            <span class="opt-key">A</span>
+            CMD sets the base image; ENTRYPOINT sets the command to run
+          </div>
+          <div class="quiz-opt" onclick="answer(this,false)">
+            <span class="opt-key">B</span>
+            They are identical — ENTRYPOINT is just the older syntax
+          </div>
+          <div class="quiz-opt" onclick="answer(this,true)">
+            <span class="opt-key">C</span>
+            ENTRYPOINT sets the executable; CMD provides default arguments that can be overridden at runtime
+          </div>
+          <div class="quiz-opt" onclick="answer(this,false)">
+            <span class="opt-key">D</span>
+            CMD runs during build; ENTRYPOINT runs when the container starts
+          </div>
+        </div>
+        <div class="quiz-explanation" id="q-explain">
+          ✅ Correct! ENTRYPOINT defines the main process (e.g., <code>["node"]</code>) and CMD provides default arguments (e.g., <code>["app.js"]</code>). Running <code>docker run myimage server.js</code> overrides CMD but not ENTRYPOINT. This pattern is commonly used in official images.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHEATSHEET -->
+<section id="cheatsheet">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <p class="section-tag">// 05 — Cheatsheet</p>
+      <h2 class="section-title">150+ commands,<br>click to copy</h2>
+    </div>
+    <div class="cheat-grid">
+
+      <div class="cheat-card reveal">
+        <div class="cheat-cat">Container lifecycle</div>
+        <div class="cheat-list">
+          <div class="cheat-item" onclick="copyCmd(this,'docker run -d --name app nginx')">
+            <span class="cheat-cmd">docker run -d --name app nginx</span>
+            <span class="copied-tag">copied!</span>
+          </div>
+          <div class="cheat-item" onclick="copyCmd(this,'docker stop app && docker rm app')">
+            <span class="cheat-cmd">docker stop app && docker rm app</span>
+            <span class="copied-tag">copied!</span>
+          </div>
+          <div class="cheat-item" onclick="copyCmd(this,'docker exec -it app sh')">
+            <span class="cheat-cmd">docker exec -it app sh</span>
+            <span class="copied-tag">copied!</span>
+          </div>
+          <div class="cheat-item" onclick="copyCmd(this,'docker logs -f --tail 100 app')">
+            <span class="cheat-cmd">docker logs -f --tail 100 app</span>
+            <span class="copied-tag">copied!</span>
+          </div>
+          <div class="cheat-item" onclick="copyCmd(this,'docker inspect app')">
+            <span class="cheat-cmd">docker inspect app</span>
+            <span class="copied-tag">copied!</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cheat-card reveal">
+        <div class="cheat-cat">Images</div>
+        <div class="cheat-list">
+          <div class="cheat-item" onclick="copyCmd(this,'docker build -t myapp:latest .')">
+            <span class="cheat-cmd">docker build -t myapp:latest .</span>
+            <span class="copied-tag">copied!</span>
+          </div>
+          <div class="cheat-item" onclick="copyCmd(this,'docker build --no-cache --progress=plain .')">
+            <span class="cheat-cmd">docker build --no-cache --progress=plain .</span>
+            <span class="copied-tag">copied!</span>
+          </div>
+          <div class="cheat-item" onclick="copyCmd(this,'docker image ls --format \"table {{.Repository}}\\t{{.Size}}\"')">
+            <span class="cheat-cmd">docker image ls --format table</span>
+            <span class="copied-tag">copied!</span>
+          </div>
+          <div class="cheat-item" onclick="copyCmd(this,'docker rmi $(docker images -f dangling=true -q)')">
+            <span class="cheat-cmd">docker rmi $(docker images -f dangling=true -q)</span>
+            <span class="copied-tag">copied!</span>
+          </div>
+          <div class="cheat-item" onclick="copyCmd(this,'docker save myapp | gzip > myapp.tar.gz')">
+            <span class="cheat-cmd">docker save myapp | gzip > myapp.tar.gz</span>
+            <span class="copied-tag">copied!</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cheat-card reveal">
+        <div class="cheat-cat">Networking</div>
+        <div class="cheat-list">
+          <div class="cheat-item" onclick="copyCmd(this,'docker network create --driver bridge mynet')">
+            <span class="cheat-cmd">docker network create --driver bridge mynet</span>
+            <span class="copied-tag">copied!</span>
+          </div>
+          <div class="cheat-item" onclick="copyCmd(this,'docker network connect mynet app')">
+            <span class="cheat-cmd">docker network connect mynet app</span>
+            <span class="copied-tag">copied!</span>
+          </div>
+          <div class="cheat-item" onclick="copyCmd(this,'docker network inspect mynet')">
+            <span class="cheat-cmd">docker network inspect mynet</span>
+            <span class="copied-tag">copied!</span>
+          </div>
+          <div class="cheat-item" onclick="copyCmd(this,'docker run --network host nginx')">
+            <span class="cheat-cmd">docker run --network host nginx</span>
+            <span class="copied-tag">copied!</span>
+          </div>
+          <div class="cheat-item" onclick="copyCmd(this,'docker run -p 8080:80 nginx')">
+            <span class="cheat-cmd">docker run -p 8080:80 nginx</span>
+            <span class="copied-tag">copied!</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cheat-card reveal">
+        <div class="cheat-cat">Cleanup</div>
+        <div class="cheat-list">
+          <div class="cheat-item" onclick="copyCmd(this,'docker system prune -af --volumes')">
+            <span class="cheat-cmd">docker system prune -af --volumes</span>
+            <span class="copied-tag">copied!</span>
+          </div>
+          <div class="cheat-item" onclick="copyCmd(this,'docker container prune')">
+            <span class="cheat-cmd">docker container prune</span>
+            <span class="copied-tag">copied!</span>
+          </div>
+          <div class="cheat-item" onclick="copyCmd(this,'docker volume prune')">
+            <span class="cheat-cmd">docker volume prune</span>
+            <span class="copied-tag">copied!</span>
+          </div>
+          <div class="cheat-item" onclick="copyCmd(this,'docker ps -aq | xargs docker rm -f')">
+            <span class="cheat-cmd">docker ps -aq | xargs docker rm -f</span>
+            <span class="copied-tag">copied!</span>
+          </div>
+          <div class="cheat-item" onclick="copyCmd(this,'docker builder prune')">
+            <span class="cheat-cmd">docker builder prune</span>
+            <span class="copied-tag">copied!</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- LEARNING PATH -->
+<section style="background: var(--bg2); border-top: 1px solid var(--border);">
+  <div class="section-inner">
+    <div class="section-header reveal">
+      <p class="section-tag">// 06 — Learning Path</p>
+      <h2 class="section-title">Zero to container<br>expert, structured</h2>
+    </div>
+    <div class="path-list">
+
+      <div class="path-item reveal">
+        <div class="path-num">01</div>
+        <div class="path-content">
+          <div class="path-title">Container basics &amp; first run</div>
+          <div class="path-desc">Understand what containers are, install Docker, run your first container, explore the filesystem.</div>
+          <div class="path-tags">
+            <span class="path-tag">docker run</span>
+            <span class="path-tag">docker ps</span>
+            <span class="path-tag">docker exec</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="path-item reveal">
+        <div class="path-num">02</div>
+        <div class="path-content">
+          <div class="path-title">Writing your first Dockerfile</div>
+          <div class="path-desc">Build a custom image, understand layers, cache busting, and choosing the right base image.</div>
+          <div class="path-tags">
+            <span class="path-tag">FROM</span>
+            <span class="path-tag">RUN</span>
+            <span class="path-tag">COPY</span>
+            <span class="path-tag">CMD</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="path-item reveal">
+        <div class="path-num">03</div>
+        <div class="path-content">
+          <div class="path-title">Multi-service apps with Compose</div>
+          <div class="path-desc">Run a full stack (app + db + cache) with Docker Compose. Services, volumes, networks.</div>
+          <div class="path-tags">
+            <span class="path-tag">compose.yaml</span>
+            <span class="path-tag">depends_on</span>
+            <span class="path-tag">healthcheck</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="path-item reveal">
+        <div class="path-num">04</div>
+        <div class="path-content">
+          <div class="path-title">Production-ready images</div>
+          <div class="path-desc">Multi-stage builds, non-root user, .dockerignore, image scanning, size optimization.</div>
+          <div class="path-tags">
+            <span class="path-tag">multi-stage</span>
+            <span class="path-tag">trivy</span>
+            <span class="path-tag">dive</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="path-item reveal">
+        <div class="path-num">05</div>
+        <div class="path-content">
+          <div class="path-title">Ship to production &amp; Kubernetes</div>
+          <div class="path-desc">Push to registries, CI/CD pipelines, container resource limits, and the bridge to Kubernetes.</div>
+          <div class="path-tags">
+            <span class="path-tag">ECR</span>
+            <span class="path-tag">GHCR</span>
+            <span class="path-tag">GitHub Actions</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">🐳 DockerLab · EknathaLabs</div>
+  <div class="footer-links">
+    <a href="https://kubelab.eknathalabs.com" target="_blank">KubeLab</a>
+    <a href="https://terraform.eknathalabs.com" target="_blank">Terraform</a>
+    <a href="https://linux.eknathalabs.com" target="_blank">Linux</a>
+    <a href="https://eknathalabs.com" target="_blank">EknathaLabs ↗</a>
+  </div>
+  <div class="footer-copy">Free forever · Built by a  Engineer</div>
+</footer>
+
+<script>
+  // ── SCROLL REVEAL ──
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ── COPY COMMAND ──
+  function copyCmd(el, cmd) {
+    navigator.clipboard.writeText(cmd).catch(() => {});
+    const tag = el.querySelector('.copied-tag');
+    tag.style.opacity = '1';
+    setTimeout(() => tag.style.opacity = '0', 1500);
+  }
+
+  // ── QUIZ ──
+  let xp = 0;
+  function answer(el, correct) {
+    if (document.querySelector('.quiz-opt.correct') || document.querySelector('.quiz-opt.wrong')) return;
+    el.classList.add(correct ? 'correct' : 'wrong');
+    if (!correct) {
+      document.querySelectorAll('.quiz-opt').forEach((o,i) => {
+        if (o.onclick.toString().includes('true')) o.classList.add('correct');
+      });
+    }
+    if (correct) {
+      xp += 10;
+      document.getElementById('q-xp').textContent = '⚡ ' + xp + ' XP';
+    }
+    document.getElementById('q-explain').style.display = 'block';
+  }
+
+  // ── LINTER ANALYZE (demo feedback) ──
+  function analyzeDf() {
+    const val = document.getElementById('df-input').value;
+    const issues = [];
+    const list = document.getElementById('issues-list');
+    let score = 100;
+
+    if (val.includes('FROM ubuntu') || val.includes('FROM centos') || val.includes('FROM debian')) {
+      issues.push(['WARN', 'Using a heavy base image. Consider alpine or distroless for smaller footprint']);
+      score -= 20;
+    }
+    if (val.includes(':latest')) {
+      issues.push(['ERROR', 'Tag :latest is mutable and unpredictable in CI. Pin to a specific version or digest']);
+      score -= 25;
+    }
+    if (!val.includes('USER ')) {
+      issues.push(['ERROR', 'Container will run as root. Add USER directive with a non-root user']);
+      score -= 20;
+    }
+    if (val.includes('COPY . .') && val.indexOf('COPY . .') < val.indexOf('npm install')) {
+      issues.push(['WARN', 'COPY . . before install busts cache on every code change. Copy package files first']);
+      score -= 15;
+    }
+    if (!val.includes('HEALTHCHECK')) {
+      issues.push(['INFO', 'No HEALTHCHECK defined. Orchestrators cannot detect unhealthy containers']);
+      score -= 5;
+    }
+    if (val.includes('npm install') && !val.includes('--production') && !val.includes('--only=production') && !val.includes('ci')) {
+      issues.push(['WARN', 'Use npm ci --only=production in production images to avoid devDependencies']);
+      score -= 10;
+    }
+    if (issues.length === 0) {
+      issues.push(['INFO', 'No major issues detected! Consider running a full security scan with trivy.']);
+      score = 95;
+    }
+
+    const sevMap = { ERROR: 'sev-err', WARN: 'sev-warn', INFO: 'sev-ok' };
+    list.innerHTML = issues.map(([sev, msg]) =>
+      `<div class="issue-item"><span class="issue-sev ${sevMap[sev]}">${sev}</span><span class="issue-text">${msg}</span></div>`
+    ).join('');
+
+    score = Math.max(10, score);
+    const scoreEl = document.querySelector('.score-val');
+    scoreEl.textContent = score + '/100';
+    scoreEl.style.color = score >= 70 ? 'var(--green)' : score >= 40 ? 'var(--orange)' : 'var(--red)';
+    document.querySelector('.score-bar span:last-child').textContent =
+      score >= 70 ? '● Good' : score >= 40 ? '● Needs work' : '● Critical issues';
+    document.querySelector('.score-bar span:last-child').style.color =
+      score >= 70 ? 'var(--green)' : score >= 40 ? 'var(--orange)' : 'var(--red)';
+  }
+</script>
+</body>
+</html>
