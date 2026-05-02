@@ -1,7 +1,7 @@
 # 🐳 DockerLab — Container Engineering by EknathaLabs
 
 > **Master Docker from first run to production-grade containers.**
-> AI-powered tools, 30-question quiz, 80+ command cheatsheet, and 10 structured learning modules. Free forever.
+> AI-powered tools, 100-question quiz, 150+ command cheatsheet, real-world Dockerfile library, DCA cert prep, and 10 structured learning modules. Free forever.
 
 [![Live Site](https://img.shields.io/badge/Live-docker.eknathalabs.com-1D63ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.eknathalabs.com)
 [![EknathaLabs](https://img.shields.io/badge/EknathaLabs-Platform%20Engineering-F7941D?style=for-the-badge)](https://eknathalabs.com)
@@ -26,17 +26,46 @@ All tools use the Claude AI API and run entirely in the browser — no backend r
 | 🔒 **Security Auditor** | Security score out of 10, issues by severity, hardened Dockerfile |
 | 🌐 **Network Explainer** | Clear answers to any Docker networking question with examples |
 
-### 🧠 30-Question Quiz
-- Questions across 6 categories: Basics, Dockerfile, Networking, Storage, Compose, Security
-- XP tracking (10 XP per correct answer)
-- Instant feedback with correct/wrong highlighting
-- Detailed explanations for every answer
-- Results screen with score and performance label
+### 🧠 100-Question Quiz
+- 100 questions across 6 categories: Basics, Dockerfile, Networking, Storage, Compose, Security
+- **Topic filter** — drill into a specific domain or practice all at once
+- Questions shuffle randomly on every session
+- XP tracking (10 XP per correct answer) with performance label at the end
+- Instant feedback with correct/wrong highlighting and detailed explanations
 
-### ⌘ Cheatsheet — 80+ Commands
+### ⌘ Cheatsheet — 150+ Commands
 - 10 categories: Container Basics, Management, Exec & Inspect, Images, Registry, Volumes, Networking, Cleanup, Compose, Debugging
 - Live search filter across all commands
 - Click-to-copy with visual flash feedback
+
+### 📂 Real-World Dockerfile Library
+Production-ready, copy-paste Dockerfiles for 8 popular stacks:
+
+| Stack | Final Size | Key Techniques |
+|---|---|---|
+| **Node.js** (Express API) | ~45MB | Multi-stage, alpine, dumb-init, healthcheck |
+| **Python** (FastAPI/Django) | ~160MB | Virtualenv, slim, non-root |
+| **Go** (REST API) | ~12MB | FROM scratch, static binary, CGO_ENABLED=0 |
+| **Next.js** (standalone) | ~180MB | Standalone output, node user |
+| **Java** (Spring Boot) | ~220MB | Layered JAR, JRE-only final stage |
+| **Rust** (Axum API) | ~15MB | cargo-chef, distroless, musl target |
+| **PHP** (Laravel) | ~500MB | PHP-FPM, Composer, OPcache |
+| **React** (Vite + Nginx) | ~25MB | Static build, SPA routing, gzip |
+
+Each Dockerfile includes syntax highlighting, a click-to-copy button, and notes explaining the key decisions.
+
+### ✅ Best Practices Guide — 60+ Rules
+- 6 categories: Image & Dockerfile, Security, Networking, Storage, Compose, Performance & CI/CD
+- Severity levels: Critical · Important · Recommended
+- Category filter to focus on a specific area
+- All cards expandable/collapsible
+
+### 🏅 DCA Cert Prep Guide
+Complete study guide for the **Docker Certified Associate** exam:
+- Exam overview: 55 questions, 90 minutes, ≥65% to pass
+- All **6 official exam domains** with percentage weighting and every learning objective
+- Study tips and exam strategy
+- Curated resources: official exam page, Docker docs, Play With Docker, community guides
 
 ### 📚 10 Learning Modules
 Structured curriculum from zero to production:
@@ -52,7 +81,13 @@ Structured curriculum from zero to production:
 9. CI/CD with Docker
 10. Production Patterns & Kubernetes
 
-Each module includes topic list, estimated duration, command tags, and links to AI tools for practice.
+### 🌙 Theme Toggle
+Dark (terminal) and light mode with system-preference detection. Preference saved to localStorage.
+
+### 📱 Mobile-First Design
+- Fixed **bottom navigation bar** on mobile — Tools, Quiz, Cheatsheet, Library, DCA, Guides
+- Collapses top nav on small screens
+- Respects iOS safe-area-inset for notched devices
 
 ---
 
@@ -70,14 +105,22 @@ This is a **zero-dependency, single-file web app**. No framework, no bundler, no
 
 ```
 index.html
-├── CSS          — Custom properties, dark theme, responsive layout
-├── HTML         — 5 pages: Home, Tools, Quiz, Cheatsheet, Learn
+├── CSS
+│   ├── Custom properties (dark + light theme)
+│   ├── Responsive layout with mobile bottom nav
+│   └── Component styles for all 8 pages
+├── HTML — 8 pages: Home, Tools, Quiz, Cheatsheet, Learn,
+│          Best Practices, Dockerfile Library, DCA Prep
 └── JavaScript
-    ├── Navigation   — Page switching, sidebar tool selection
-    ├── Claude API   — fetch() calls to Anthropic /v1/messages
-    ├── Quiz Engine  — Question rendering, scoring, XP tracking
-    ├── Cheatsheet   — Dynamic render, live search, clipboard copy
-    └── Modules      — Accordion expand/collapse, topic lists
+    ├── Navigation      — Page switching, bottom nav sync, tab highlight
+    ├── Theme toggle    — Dark/light with localStorage persistence
+    ├── Claude API      — fetch() calls to Anthropic /v1/messages
+    ├── Quiz Engine     — 100 Q, topic filter, shuffle, XP tracking
+    ├── Cheatsheet      — Dynamic render, live search, clipboard copy
+    ├── Dockerfile Lib  — 8 stacks, syntax highlighting, copy button
+    ├── DCA Guide       — Domain accordion, progress bars, resources
+    ├── Best Practices  — Category filter, severity badges, accordion
+    └── Modules         — Accordion expand/collapse, topic lists
 ```
 
 ### AI Integration
@@ -95,7 +138,7 @@ const res = await fetch('https://api.anthropic.com/v1/messages', {
 });
 ```
 
-Each tool has a carefully crafted prompt that instructs the model to return structured, formatted output that is then rendered as HTML.
+Each tool has a carefully crafted prompt that instructs the model to return structured, severity-labelled output rendered as HTML.
 
 ---
 
@@ -112,11 +155,11 @@ docker-eknathalabs/
 
 ## 🎨 Design
 
-- **Theme** — Dark terminal aesthetic with Docker blue (#1D63ED) and orange (#F7941D) accents
+- **Theme** — Dark terminal aesthetic + light mode toggle. Docker blue (`#1D63ED`) and orange (`#F7941D`) accents
 - **Fonts** — IBM Plex Mono (code/body) + Syne (display/headings)
-- **Background** — Subtle grid overlay with radial blue glow on hero
-- **Animations** — Fade-up on load, blinking cursor, bouncing whale emoji
-- **Responsive** — Mobile-first, collapses sidebar on small screens
+- **Background** — Subtle 48px grid overlay with radial blue glow on hero
+- **Animations** — Fade-up on load, blinking cursor, bouncing whale emoji, scroll reveal
+- **Responsive** — Mobile bottom nav, collapses sidebar on small screens, safe-area insets
 
 ---
 
@@ -166,12 +209,14 @@ open index.html
 ```
 
 ### Ideas for contribution
-- Add more quiz questions (currently 30, target: 100)
+- Add more quiz questions (target: 150+)
+- Add more Dockerfile examples to the library (Ruby, Elixir, Bun, Deno)
 - Add more cheatsheet commands
 - Add new learning modules (Docker Swarm, BuildKit advanced)
-- Improve mobile responsive layout
 - Add keyboard shortcuts for quiz (A/B/C/D keys)
-- Add dark/light theme toggle
+- Add `docker run → compose` converter tool
+- Add daily challenge + streak tracker
+- Add shareable quiz result card
 
 ---
 
@@ -183,7 +228,7 @@ MIT License — free to use, modify, and distribute. See [LICENSE](LICENSE) for 
 
 ## 👤 Author
 
-Built by **Eknatha Reddy** —  Engineer
+Built by **Eknatha Reddy** — Engineer
 
 - 🌐 [eknathalabs.com](https://eknathalabs.com)
 - 🐙 [github.com/eknatha](https://github.com/eknatha)
