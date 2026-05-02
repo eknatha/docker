@@ -13,7 +13,20 @@
   --orange:#f7941d;--orange-l:#ffb347;
   --green:#2dce89;--red:#f5365c;--yellow:#ffd600;--cyan:#11cdef;
   --text:#e6edf3;--muted:#6e8098;--mono:'IBM Plex Mono',monospace;--display:'Syne',sans-serif;
+  --nav-bg:rgba(8,11,15,.92);
 }
+html.light{
+  --bg:#f4f6fa;--bg2:#ffffff;--bg3:#edf0f5;--surface:#e4e8f0;
+  --border:#d0d7e3;--border2:#b8c2d4;
+  --text:#0f1923;--muted:#5a6a82;
+  --nav-bg:rgba(244,246,250,.92);
+}
+html.light body::before{
+  background-image:linear-gradient(rgba(29,99,237,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(29,99,237,.06) 1px,transparent 1px);
+}
+/* THEME TOGGLE BUTTON */
+.theme-btn{width:36px;height:36px;border-radius:8px;border:1px solid var(--border2);background:var(--bg3);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:.2s;flex-shrink:0}
+.theme-btn:hover{border-color:var(--muted)}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--mono);font-size:14px;line-height:1.6;overflow-x:hidden}
@@ -29,7 +42,7 @@ body::before{content:'';position:fixed;inset:0;
 nav{position:fixed;top:0;left:0;right:0;z-index:200;
   display:flex;align-items:center;justify-content:space-between;
   padding:0 2rem;height:56px;
-  background:rgba(8,11,15,.9);backdrop-filter:blur(20px);
+  background:var(--nav-bg);backdrop-filter:blur(20px);
   border-bottom:1px solid var(--border)}
 .nav-logo{display:flex;align-items:center;gap:10px;font-family:var(--display);font-size:20px;font-weight:800;cursor:pointer}
 .logo-icon{width:34px;height:34px;background:var(--blue);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:20px}
@@ -230,8 +243,48 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:1.
   .section{padding:3rem 1.25rem}
   footer{flex-direction:column}
   .tools-main{padding:1.25rem}
-  .quiz-wrap,.cheat-wrap,.path-wrap{padding:1.5rem 1rem}
+  .quiz-wrap,.cheat-wrap,.path-wrap,.bp-wrap{padding:1.5rem 1rem}
 }
+/* BEST PRACTICES PAGE */
+.bp-wrap{max-width:960px;margin:0 auto;padding:2.5rem 2rem}
+.bp-filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:2rem}
+.bp-filter{padding:6px 14px;border-radius:20px;font-size:12px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border2);background:transparent;color:var(--muted);transition:.2s}
+.bp-filter:hover{color:var(--text)}
+.bp-filter.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.bp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:14px}
+@media(max-width:600px){.bp-grid{grid-template-columns:1fr}}
+.bp-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:.2s}
+.bp-card:hover{border-color:var(--border2)}
+.bp-card-top{display:flex;align-items:flex-start;gap:14px;padding:18px 20px;cursor:pointer}
+.bp-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.bp-info{flex:1}
+.bp-title{font-size:13px;font-weight:600;margin-bottom:4px;color:var(--text)}
+.bp-meta{font-size:11px;color:var(--muted)}
+.bp-body{display:none;border-top:1px solid var(--border);padding:16px 20px}
+.bp-body.open{display:block}
+.bp-rule{display:flex;gap:10px;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--border);font-size:12px;line-height:1.6}
+.bp-rule:last-child{border-bottom:none}
+.bp-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.bp-rule-text{color:var(--muted);flex:1}
+.bp-rule-text strong{color:var(--text);font-weight:500}
+.bp-rule-text code{background:rgba(29,99,237,.12);padding:1px 5px;border-radius:3px;color:var(--blue-l);font-size:11px}
+.bp-severity{font-size:10px;padding:1px 7px;border-radius:10px;flex-shrink:0;font-weight:600}
+.sev-critical{background:rgba(245,54,92,.15);color:var(--red);border:1px solid rgba(245,54,92,.2)}
+.sev-important{background:rgba(247,148,29,.15);color:var(--orange);border:1px solid rgba(247,148,29,.2)}
+.sev-recommended{background:rgba(29,99,237,.15);color:var(--blue-l);border:1px solid rgba(29,99,237,.2)}
+/* QUIZ TOPIC FILTER */
+.quiz-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.25rem}
+.qf-btn{padding:5px 12px;border-radius:20px;font-size:11px;font-family:var(--mono);cursor:pointer;border:1px solid var(--border2);background:transparent;color:var(--muted);transition:.2s;letter-spacing:.04em}
+.qf-btn:hover{color:var(--text)}
+.qf-btn.active{color:#fff;border-color:transparent}
+.qf-ALL{background:var(--blue)!important}
+.qf-BASICS{background:#534AB7!important}
+.qf-DOCKERFILE{background:#0F6E56!important}
+.qf-NETWORKING{background:#185FA5!important}
+.qf-STORAGE{background:#854F0B!important}
+.qf-COMPOSE{background:#993C1D!important}
+.qf-SECURITY{background:#A32D2D!important}
+.quiz-count{font-size:12px;color:var(--muted);margin-bottom:1rem}
 </style>
 </head>
 <body>
@@ -248,8 +301,10 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:1.
     <button class="nav-tab" onclick="showPage('quiz')" id="tab-quiz">🧠 Quiz</button>
     <button class="nav-tab" onclick="showPage('cheatsheet')" id="tab-cheatsheet">⌘ Cheatsheet</button>
     <button class="nav-tab" onclick="showPage('learn')" id="tab-learn">📚 Learn</button>
+    <button class="nav-tab" onclick="showPage('bestpractices')" id="tab-bestpractices">✅ Best Practices</button>
   </div>
   <div class="nav-right">
+    <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
     <span class="nav-badge">Free · No signup</span>
   </div>
 </nav>
@@ -291,6 +346,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:1.
     <div class="stat"><div class="stat-n">8</div><div class="stat-l">AI Tools</div></div>
     <div class="stat"><div class="stat-n">10</div><div class="stat-l">Modules</div></div>
     <div class="stat"><div class="stat-n">100</div><div class="stat-l">Quiz Q&amp;A</div></div>
+    <div class="stat"><div class="stat-n">60+</div><div class="stat-l">Best Practices</div></div>
     <div class="stat"><div class="stat-n">150+</div><div class="stat-l">Commands</div></div>
     <div class="stat"><div class="stat-n">Free</div><div class="stat-l">Always</div></div>
   </div>
@@ -550,6 +606,8 @@ CMD ["python", "app.py"]</textarea>
 <div class="page" id="page-quiz">
   <div class="quiz-wrap">
     <div id="quiz-game">
+      <div class="quiz-filters" id="quiz-filters"></div>
+      <div class="quiz-count" id="quiz-count"></div>
       <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="q-fill" style="width:1%"></div></div>
       <div class="quiz-meta">
         <span id="q-num">Question 1 / 30</span>
@@ -601,7 +659,31 @@ CMD ["python", "app.py"]</textarea>
   </div>
 </div>
 
+<!-- ═══════════════════ BEST PRACTICES PAGE ═══════════════════ -->
+<div class="page" id="page-bestpractices">
+  <div class="bp-wrap">
+    <p class="sec-tag">// Best Practices</p>
+    <h2 class="sec-title" style="margin-bottom:.5rem">60+ Docker Best Practices</h2>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:1.5rem">Production-proven rules. Click any category to expand. Severity: <span style="color:var(--red)">Critical</span> · <span style="color:var(--orange)">Important</span> · <span style="color:var(--blue-l)">Recommended</span></p>
+    <div class="bp-filter-row" id="bp-filters"></div>
+    <div class="bp-grid" id="bp-grid"></div>
+  </div>
+</div>
+
 <script>
+// ══════════════════════════════════════════════
+//  THEME TOGGLE
+// ══════════════════════════════════════════════
+function toggleTheme() {
+  const isLight = document.documentElement.classList.toggle('light');
+  document.getElementById('theme-btn').textContent = isLight ? '🌞' : '🌙';
+  localStorage.setItem('dl-theme', isLight ? 'light' : 'dark');
+}
+(function(){
+  const saved = localStorage.getItem('dl-theme');
+  if (saved === 'light') { document.documentElement.classList.add('light'); }
+})();
+
 // ══════════════════════════════════════════════
 //  NAVIGATION
 // ══════════════════════════════════════════════
@@ -614,6 +696,7 @@ function showPage(name) {
   window.scrollTo(0, 0);
   if (name === 'cheatsheet') renderCheatsheet();
   if (name === 'learn') renderModules();
+  if (name === 'bestpractices') renderBestPractices();
 }
 
 function showTool(name) {
@@ -896,47 +979,160 @@ function copyOutput(id) {
 }
 
 // ══════════════════════════════════════════════
-//  QUIZ DATA (30 Questions)
+//  QUIZ DATA — 100 Questions
 // ══════════════════════════════════════════════
-const QUIZ = [
-  { cat:'BASICS', q:'What is the difference between an image and a container in Docker?', opts:['They are the same thing','An image is a running instance; a container is a blueprint','An image is a read-only template; a container is a running instance of that image','A container is stored on disk; an image runs in memory'], ans:2, exp:'A Docker image is a read-only blueprint built from a Dockerfile. A container is a running (or stopped) instance of that image — like a class vs an object in OOP.' },
-  { cat:'DOCKERFILE', q:'What is the purpose of the ENTRYPOINT instruction in a Dockerfile?', opts:['Sets the working directory','Defines the executable to run when the container starts','Copies files into the image','Sets environment variables'], ans:1, exp:'ENTRYPOINT defines the main process. Unlike CMD, it cannot be overridden at runtime (only appended to). Combined with CMD, it creates flexible entry points.' },
-  { cat:'DOCKERFILE', q:'Which combination gives best layer caching for a Node.js app?', opts:['COPY . . then RUN npm install','RUN npm install then COPY . .','COPY package*.json ./ then RUN npm install then COPY . .','They all produce the same cache behavior'], ans:2, exp:'Copy only package files first, install dependencies (cached unless package.json changes), then copy source code. This way, code changes don\'t bust the npm install cache.' },
-  { cat:'NETWORKING', q:'What does docker run -p 8080:80 mean?', opts:['Maps container port 8080 to host port 80','Maps host port 8080 to container port 80','Exposes both ports 8080 and 80','Creates a network bridge between the ports'], ans:1, exp:'Format is -p HOST:CONTAINER. So -p 8080:80 means traffic hitting port 8080 on your host machine is forwarded to port 80 inside the container.' },
-  { cat:'BASICS', q:'What does docker ps -a show?', opts:['Only running containers','All containers including stopped ones','All images including dangling ones','Running containers and their logs'], ans:1, exp:'docker ps shows only running containers. The -a (or --all) flag includes stopped, exited, and paused containers too.' },
-  { cat:'STORAGE', q:'What is the key difference between a volume and a bind mount?', opts:['Volumes are slower; bind mounts are faster','Volumes are managed by Docker in a special directory; bind mounts link to a specific host path','Bind mounts persist data; volumes are ephemeral','There is no practical difference'], ans:1, exp:'Volumes are managed by Docker (/var/lib/docker/volumes/) and are portable, shareable, and easy to back up. Bind mounts directly mount a host directory path into the container.' },
-  { cat:'COMPOSE', q:'What does depends_on guarantee in Docker Compose?', opts:['The dependent service is healthy before starting','Container startup order only — not that the service is ready','Both startup order and readiness','Nothing — it is deprecated'], ans:1, exp:'depends_on only controls start order. Use depends_on with condition: service_healthy and a healthcheck to wait until a service is actually ready to accept connections.' },
-  { cat:'SECURITY', q:'Why should you avoid running containers as root?', opts:['Root containers use more memory','If the container is compromised, the attacker gains root access on the host','Root slows down container startup','Docker does not support running as root'], ans:1, exp:'A root process in a container, if it escapes the container namespace, has root on the host. Always use USER to specify a non-root user in your Dockerfile.' },
-  { cat:'DOCKERFILE', q:'What does the HEALTHCHECK instruction do?', opts:['Checks if the Dockerfile is valid','Tells Docker how to test if the container is still working correctly','Scans the image for vulnerabilities','Validates environment variables'], ans:1, exp:'HEALTHCHECK runs a command inside the container periodically. If it fails repeatedly, the container is marked as unhealthy. Orchestrators like Compose and Kubernetes use this status.' },
-  { cat:'BASICS', q:'What command removes all stopped containers, unused networks, dangling images, and build cache?', opts:['docker rm -f $(docker ps -aq)','docker system prune','docker clean all','docker rmi --all'], ans:1, exp:'docker system prune is the single command to reclaim disk space. Add -a to also remove unused images, and --volumes to remove unused volumes (use with caution!).' },
-  { cat:'NETWORKING', q:'What is the default network driver for containers on a single host?', opts:['host','overlay','macvlan','bridge'], ans:3, exp:'By default, Docker uses the bridge driver. Each bridge network gets its own subnet and Docker acts as a DNS resolver for container names within the same network.' },
-  { cat:'DOCKERFILE', q:'What is a multi-stage build used for?', opts:['To build images for multiple CPU architectures','To reduce final image size by separating build and runtime stages','To build multiple services at once','To run multiple commands in parallel'], ans:1, exp:'Multi-stage builds use multiple FROM statements. Build tools, compilers, and test dependencies live in early stages. The final stage copies only the compiled artifact, dramatically reducing image size.' },
-  { cat:'COMPOSE', q:'In Docker Compose, how do containers on the same service network resolve each other by hostname?', opts:['By container ID','By service name defined in compose.yaml','By IP address only','By container name with a random suffix'], ans:1, exp:'Docker Compose creates a default network and sets up DNS so containers can reach each other using the service name (e.g., db, redis, app) as the hostname.' },
-  { cat:'STORAGE', q:'What happens to data written inside a container with no volumes when the container is deleted?', opts:['It is saved to the host automatically','It is lost permanently','It is moved to a dangling volume','It is backed up to an image layer'], ans:1, exp:'Container filesystems are ephemeral. Without a volume or bind mount, all writes go to the writable container layer, which is destroyed when the container is removed.' },
-  { cat:'BASICS', q:'What does the -d flag do in docker run -d nginx?', opts:['Deletes the container after it exits','Runs the container in detached (background) mode','Disables networking','Runs in debug mode'], ans:1, exp:'-d (--detach) starts the container in the background. Without it, your terminal attaches to the container\'s stdout/stderr. Use docker logs to view output of detached containers.' },
-  { cat:'SECURITY', q:'What is the risk of using COPY . . in a Dockerfile without a .dockerignore?', opts:['It causes a build error','Sensitive files like .env and node_modules get copied into the image','It makes the build slower only','COPY . . is deprecated'], ans:1, exp:'.dockerignore works like .gitignore for Docker. Without it, COPY . . can include .git, .env files, node_modules, and other sensitive or large directories into the image.' },
-  { cat:'NETWORKING', q:'What network mode gives a container direct access to the host\'s network stack (no isolation)?', opts:['bridge','none','host','overlay'], ans:2, exp:'--network host removes network isolation. The container shares the host\'s network namespace directly. Great for performance-sensitive tools, but breaks container portability.' },
-  { cat:'DOCKERFILE', q:'What is the difference between RUN, CMD, and ENTRYPOINT?', opts:['They are all the same','RUN executes during build; CMD is the default command at startup; ENTRYPOINT is the fixed executable','CMD executes at build time; RUN and ENTRYPOINT are runtime','RUN is for Linux; CMD is for Windows'], ans:1, exp:'RUN executes commands during image build (creates layers). CMD provides default arguments when the container starts (overridable). ENTRYPOINT sets the fixed executable (not overridable without --entrypoint).' },
-  { cat:'BASICS', q:'Which command shows the layers of a Docker image?', opts:['docker inspect','docker history','docker logs','docker diff'], ans:1, exp:'docker history <image> shows each layer: the command that created it, its size, and when it was created. Useful for understanding image composition and finding bloated layers.' },
-  { cat:'COMPOSE', q:'What does the restart: always policy do in Docker Compose?', opts:['Restarts the container on a schedule','Restarts the container whenever it exits, regardless of exit code','Restarts only on failure','It is the same as restart: on-failure'], ans:1, exp:'restart: always makes Docker always restart the container when it exits (including on daemon startup after a host reboot). Use unless-stopped to stop it from restarting when manually stopped.' },
-  { cat:'SECURITY', q:'What does the --read-only flag do when running a container?', opts:['Prevents reading logs','Makes the container filesystem read-only, preventing writes','Disables volume mounts','Restricts container networking'], ans:1, exp:'--read-only mounts the container\'s root filesystem as read-only. Combined with --tmpfs for temp files, this is a strong security hardening technique that prevents runtime modification.' },
-  { cat:'DOCKERFILE', q:'What is the best base image choice for a production Node.js app?', opts:['ubuntu:latest','node:latest','node:20-alpine','node:20'], ans:2, exp:'node:20-alpine (based on Alpine Linux) is ~7MB vs ~900MB for node:20 (Debian). Always pin to a specific version (not latest), and prefer alpine or slim variants in production.' },
-  { cat:'STORAGE', q:'What is the correct way to share data between two containers?', opts:['Use docker cp','Use a named volume mounted in both containers','Write to the host filesystem','Containers cannot share data'], ans:1, exp:'Named volumes can be mounted into multiple containers simultaneously, allowing shared data. Both containers reference the same volume name in their run/compose config.' },
-  { cat:'NETWORKING', q:'What does EXPOSE in a Dockerfile actually do?', opts:['Opens the port on the host automatically','Documents that the container listens on that port — it does NOT publish it','Creates a firewall rule','Maps the port to a random host port'], ans:1, exp:'EXPOSE is documentation only. It tells Docker and developers what port the app listens on, but does NOT publish it to the host. Use -p or ports: in compose to actually publish.' },
-  { cat:'BASICS', q:'What is a dangling image?', opts:['An image with no tags that is no longer referenced by any container','An image that failed to build','An image being downloaded','An image older than 30 days'], ans:0, exp:'Dangling images are untagged, unreferenced image layers (shown as <none>:<none>). They accumulate during builds when the same tag is rebuilt. Clean up with docker image prune.' },
-  { cat:'COMPOSE', q:'What is the purpose of a healthcheck in Docker Compose with depends_on?', opts:['To automatically restart failed containers','To ensure a service is fully ready before dependent services start','To monitor CPU and memory usage','To check network connectivity between services'], ans:1, exp:'With depends_on condition: service_healthy, Docker waits until the dependency\'s healthcheck passes before starting the dependent service. Essential for databases that need time to initialize.' },
-  { cat:'DOCKERFILE', q:'What does ARG differ from ENV in a Dockerfile?', opts:['ARG variables persist in the final image; ENV does not','ENV is only available at build time; ARG persists at runtime','ARG is only available during build; ENV persists into the running container','There is no difference'], ans:2, exp:'ARG variables exist only during the build process (not in the final image). ENV variables persist into the container runtime. Use ARG for build-time config, ENV for runtime config.' },
-  { cat:'SECURITY', q:'What is the principle of least privilege in Docker?', opts:['Use the smallest possible base image','Give containers only the permissions and capabilities they need, nothing more','Always use --privileged for production','Limit container network access only'], ans:1, exp:'Least privilege means containers should run as non-root, drop unnecessary Linux capabilities (--cap-drop ALL, --cap-add only what\'s needed), use read-only filesystems, and limit resource access.' },
-  { cat:'BASICS', q:'How do you follow the live logs of a running container?', opts:['docker logs container_name','docker logs -f container_name','docker attach container_name','docker watch container_name'], ans:1, exp:'docker logs -f (--follow) streams live logs. Add --tail 100 to start with the last 100 lines. docker attach connects your terminal to the container\'s main process, which can interfere.' },
-  { cat:'NETWORKING', q:'What is an overlay network in Docker used for?', opts:['Connecting containers on the same host','Connecting containers across multiple Docker hosts (Swarm/cluster)','Creating isolated networks with no external access','Connecting Docker to the host network'], ans:1, exp:'Overlay networks span multiple Docker daemons, allowing containers on different hosts in a Swarm to communicate as if on the same local network. Backed by VXLAN tunneling.' },
+const QUIZ_ALL = [
+  // BASICS (20)
+  {cat:'BASICS',q:'What is the difference between an image and a container?',opts:['They are the same thing','An image is running; a container is a blueprint','An image is a read-only template; a container is a running instance','A container is stored on disk; an image runs in memory'],ans:2,exp:'A Docker image is a read-only blueprint built from a Dockerfile. A container is a running (or stopped) instance of that image — like a class vs an object in OOP.'},
+  {cat:'BASICS',q:'What does docker ps -a show?',opts:['Only running containers','All containers including stopped ones','All images including dangling ones','Running containers and their logs'],ans:1,exp:'docker ps shows only running containers. The -a (--all) flag includes stopped, exited, and paused containers too.'},
+  {cat:'BASICS',q:'What does the -d flag do in docker run -d nginx?',opts:['Deletes the container after it exits','Runs the container in detached (background) mode','Disables networking','Runs in debug mode'],ans:1,exp:'-d (--detach) starts the container in the background. Without it, your terminal attaches to the container stdout/stderr. Use docker logs to view output of detached containers.'},
+  {cat:'BASICS',q:'What command removes all stopped containers, unused networks, dangling images, and build cache?',opts:['docker rm -f $(docker ps -aq)','docker system prune','docker clean all','docker rmi --all'],ans:1,exp:'docker system prune is the single command to reclaim disk space. Add -a to also remove unused images, and --volumes to remove unused volumes.'},
+  {cat:'BASICS',q:'Which command shows the layers of a Docker image?',opts:['docker inspect','docker history','docker logs','docker diff'],ans:1,exp:'docker history <image> shows each layer: the command that created it, its size, and when it was created. Useful for understanding image composition and finding bloated layers.'},
+  {cat:'BASICS',q:'What is a dangling image?',opts:['An image with no tags no longer referenced by any container','An image that failed to build','An image being downloaded','An image older than 30 days'],ans:0,exp:'Dangling images are untagged, unreferenced image layers (shown as <none>:<none>). They accumulate during builds when the same tag is rebuilt. Clean up with docker image prune.'},
+  {cat:'BASICS',q:'How do you follow the live logs of a running container?',opts:['docker logs container_name','docker logs -f container_name','docker attach container_name','docker watch container_name'],ans:1,exp:'docker logs -f (--follow) streams live logs. Add --tail 100 to start with the last 100 lines. docker attach connects to the main process which can interfere.'},
+  {cat:'BASICS',q:'What does docker inspect return?',opts:['Only the container IP address','A JSON blob of low-level configuration details','The container process list','The container resource usage'],ans:1,exp:'docker inspect returns detailed JSON metadata about a container or image: network settings, mounts, environment variables, state, labels, and more.'},
+  {cat:'BASICS',q:'What does the --rm flag do in docker run?',opts:['Removes the image after run','Automatically removes the container when it exits','Runs in read-only mode','Removes all volumes'],ans:1,exp:'--rm automatically deletes the container when it exits. Great for one-off commands and CI jobs where you do not want to accumulate stopped containers.'},
+  {cat:'BASICS',q:'Which command copies a file from a running container to the host?',opts:['docker pull','docker fetch','docker cp container:/path ./local','docker export'],ans:2,exp:'docker cp <container>:<src_path> <dst_path> copies files between a container and the host filesystem. Works in both directions.'},
+  {cat:'BASICS',q:'What does docker stats show?',opts:['Image layer sizes','Live CPU, memory, network I/O stats for running containers','Container environment variables','Docker daemon configuration'],ans:1,exp:'docker stats streams real-time resource usage: CPU %, memory usage/limit, net I/O, block I/O, and PIDs for each running container.'},
+  {cat:'BASICS',q:'What is the purpose of docker commit?',opts:['Save container changes as a new image','Push an image to a registry','Commit a compose file','Save a volume snapshot'],ans:0,exp:'docker commit creates a new image from a containers current state. Useful for debugging but avoid for production — use Dockerfiles for reproducible builds.'},
+  {cat:'BASICS',q:'What does docker system df show?',opts:['Disk usage by Docker objects','Network interfaces','Running process count','Environment variables'],ans:0,exp:'docker system df shows disk space used by images, containers, volumes, and build cache — useful for knowing what is safe to prune.'},
+  {cat:'BASICS',q:'What does docker tag do?',opts:['Renames a container','Creates an alias/tag pointing to an existing image','Tags a volume','Marks an image as production'],ans:1,exp:'docker tag <source> <target> creates a new tag pointing to the same image layers. No data is copied — tags are just references.'},
+  {cat:'BASICS',q:'What is the difference between docker stop and docker kill?',opts:['They are identical','docker stop sends SIGTERM then waits; docker kill sends SIGKILL immediately','docker kill is for images; docker stop is for containers','docker stop removes the container; docker kill only pauses it'],ans:1,exp:'docker stop sends SIGTERM allowing graceful shutdown, then SIGKILL after a timeout (default 10s). docker kill sends SIGKILL immediately — no cleanup possible.'},
+  {cat:'BASICS',q:'How do you view all available Docker commands?',opts:['docker --list','docker help','docker --help','docker commands'],ans:2,exp:'docker --help lists top-level commands. docker <command> --help gives detailed help for any specific command, including flags and examples.'},
+  {cat:'BASICS',q:'What format does docker inspect --format use?',opts:['JSON path','Go templates','XPath','Jinja2'],ans:1,exp:'docker inspect --format uses Go template syntax. Example: docker inspect --format="{{.State.Status}}" mycontainer outputs just the status field.'},
+  {cat:'BASICS',q:'What does docker events stream?',opts:['Container logs','Real-time events from the Docker daemon (start, stop, pull, etc.)','Network traffic','Build output'],ans:1,exp:'docker events streams real-time events from the Docker daemon: container lifecycle events, image pulls, network creation, volume mounts, and more.'},
+  {cat:'BASICS',q:'What does docker top do?',opts:['Shows the top 10 largest images','Lists running processes inside a container','Shows top CPU-using containers','Displays the Docker daemon top-level info'],ans:1,exp:'docker top <container> displays running processes inside a container, similar to the Unix top/ps command. Useful for quick process inspection without exec-ing in.'},
+  {cat:'BASICS',q:'How do you pass environment variables to a container at runtime?',opts:['--env or -e flag','--config flag','--var flag','Environment variables cannot be passed at runtime'],ans:0,exp:'Use -e KEY=VALUE or --env KEY=VALUE flags. For many vars, use --env-file .env to load from a file. These override ENV values set in the Dockerfile.'},
+  // DOCKERFILE (20)
+  {cat:'DOCKERFILE',q:'What is the purpose of ENTRYPOINT in a Dockerfile?',opts:['Sets the working directory','Defines the executable to run when the container starts','Copies files into the image','Sets environment variables'],ans:1,exp:'ENTRYPOINT defines the main process. Unlike CMD, it cannot be overridden at runtime (only appended to). Combined with CMD, it creates flexible entry points.'},
+  {cat:'DOCKERFILE',q:'Which combination gives best layer caching for a Node.js app?',opts:['COPY . . then RUN npm install','RUN npm install then COPY . .','COPY package*.json ./ then RUN npm install then COPY . .','They all produce the same cache behavior'],ans:2,exp:'Copy only package files first, install dependencies (cached unless package.json changes), then copy source code. Code changes do not bust the npm install cache.'},
+  {cat:'DOCKERFILE',q:'What does the HEALTHCHECK instruction do?',opts:['Checks if the Dockerfile is valid','Tells Docker how to test if a container is working','Scans the image for vulnerabilities','Validates environment variables'],ans:1,exp:'HEALTHCHECK runs a command inside the container periodically. If it fails repeatedly, the container is marked unhealthy. Orchestrators use this to manage traffic routing.'},
+  {cat:'DOCKERFILE',q:'What is a multi-stage build used for?',opts:['Build images for multiple CPU architectures','Reduce final image size by separating build and runtime stages','Build multiple services at once','Run multiple commands in parallel'],ans:1,exp:'Multi-stage builds use multiple FROM statements. Build tools live in early stages. The final stage copies only the compiled artifact — dramatically reducing image size.'},
+  {cat:'DOCKERFILE',q:'What is the difference between RUN, CMD, and ENTRYPOINT?',opts:['They are all the same','RUN executes during build; CMD is default command at startup; ENTRYPOINT is the fixed executable','CMD executes at build time; RUN and ENTRYPOINT are runtime','RUN is for Linux; CMD is for Windows'],ans:1,exp:'RUN executes during build (creates layers). CMD provides default arguments at startup (overridable). ENTRYPOINT sets the fixed executable (not overridable without --entrypoint).'},
+  {cat:'DOCKERFILE',q:'What does ARG differ from ENV in a Dockerfile?',opts:['ARG variables persist in the final image; ENV does not','ENV is only available at build time; ARG persists at runtime','ARG is only available during build; ENV persists into the running container','There is no difference'],ans:2,exp:'ARG variables exist only during the build process (not in the final image). ENV variables persist into the container runtime. Use ARG for build-time config, ENV for runtime config.'},
+  {cat:'DOCKERFILE',q:'What is the best base image for a production Node.js app?',opts:['ubuntu:latest','node:latest','node:20-alpine','node:20'],ans:2,exp:'node:20-alpine (~7MB) vs node:20 (~900MB, Debian). Always pin to a specific version (not latest) and prefer alpine or slim variants in production.'},
+  {cat:'DOCKERFILE',q:'What does WORKDIR do in a Dockerfile?',opts:['Sets file permissions','Sets the working directory for subsequent instructions','Copies files into the container','Creates a named volume'],ans:1,exp:'WORKDIR sets the working directory for RUN, CMD, ENTRYPOINT, COPY, and ADD instructions. If the directory does not exist, Docker creates it automatically.'},
+  {cat:'DOCKERFILE',q:'What is the difference between COPY and ADD in a Dockerfile?',opts:['They are identical','ADD can fetch remote URLs and auto-extract archives; COPY just copies local files','COPY is faster; ADD is more secure','ADD works for directories; COPY only for files'],ans:1,exp:'COPY is the preferred instruction for copying local files. ADD has extra magic: it can fetch remote URLs and auto-extract tar archives. Best practice: use COPY unless you specifically need ADD features.'},
+  {cat:'DOCKERFILE',q:'What does FROM scratch mean in a Dockerfile?',opts:['Start from the latest Ubuntu image','Start from an empty base with no OS layer','Start from the Docker scratch registry','Scratch is an alias for alpine'],ans:1,exp:'FROM scratch creates a truly minimal image with no base OS. Used for static binaries (like Go apps) that have no runtime dependencies. Results in the smallest possible images.'},
+  {cat:'DOCKERFILE',q:'How do you reduce RUN layers in a Dockerfile?',opts:['Use multiple FROM instructions','Chain commands with && in a single RUN instruction','Use LAYER instead of RUN','Run commands in CMD instead'],ans:1,exp:'Each RUN creates a new layer. Chain commands with && and use \\ for line continuation: RUN apt-get update && apt-get install -y pkg && rm -rf /var/lib/apt/lists/*'},
+  {cat:'DOCKERFILE',q:'What does .dockerignore do?',opts:['Lists files to delete from the image','Excludes files and directories from the build context sent to the Docker daemon','Prevents certain instructions from running','Defines ignore patterns for docker logs'],ans:1,exp:'.dockerignore works like .gitignore for Docker builds. It prevents files from being sent to the daemon in the build context, speeding up builds and preventing secrets from leaking.'},
+  {cat:'DOCKERFILE',q:'What is the purpose of EXPOSE in a Dockerfile?',opts:['Opens the port on the host automatically','Documents that the container listens on that port — does NOT publish it','Creates a firewall rule','Maps the port to a random host port'],ans:1,exp:'EXPOSE is documentation only. It tells Docker and developers what port the app listens on but does NOT publish it to the host. Use -p or ports: in compose to actually publish.'},
+  {cat:'DOCKERFILE',q:'What is a distroless image?',opts:['An image without a package manager','An image containing only the application and its runtime dependencies, no shell or OS utilities','An image built without a Dockerfile','A Docker Hub term for unverified images'],ans:1,exp:'Distroless images (by Google) contain only the app and runtime libraries — no shell, no package manager, no system utilities. Extremely small and secure, but harder to debug.'},
+  {cat:'DOCKERFILE',q:'What does LABEL do in a Dockerfile?',opts:['Adds metadata key-value pairs to the image','Tags the image for a registry','Labels a volume','Adds build-time arguments'],ans:0,exp:'LABEL adds metadata to an image as key-value pairs: maintainer, version, description, etc. Access them with docker inspect. Good for image cataloging and tooling.'},
+  {cat:'DOCKERFILE',q:'What is BuildKit and why use it?',opts:['An alternative to Docker Desktop','Dockers next-generation build engine with parallelism, caching, and secret support','A third-party image scanner','A Docker Compose plugin'],ans:1,exp:'BuildKit is Docker modern build engine. It enables parallel stage execution, improved caching, build secrets (no secret leakage in layers), SSH forwarding, and --cache-from/--cache-to.'},
+  {cat:'DOCKERFILE',q:'What does SHELL instruction do in a Dockerfile?',opts:['Opens a shell in the container','Changes the default shell used for RUN, CMD, ENTRYPOINT shell form','Sets the user shell','Installs a shell package'],ans:1,exp:'SHELL changes the default shell for subsequent RUN/CMD/ENTRYPOINT instructions. Default is ["/bin/sh", "-c"]. Use SHELL ["powershell", "-command"] for Windows containers.'},
+  {cat:'DOCKERFILE',q:'What is the exec form vs shell form for CMD?',opts:['They produce identical results','Exec form [cmd,arg] runs directly; shell form cmd arg runs via shell — affecting signal handling','Shell form is deprecated','Exec form only works on Linux'],ans:1,exp:'Exec form CMD ["node","app.js"] runs the process directly (PID 1, receives signals correctly). Shell form CMD node app.js wraps in /bin/sh -c, so the shell is PID 1 and signals may not propagate.'},
+  {cat:'DOCKERFILE',q:'How do you pass build-time secrets securely with BuildKit?',opts:['Use ENV instructions','Use --build-arg and hope for the best','Use RUN --mount=type=secret which never appears in image layers','Write to a file and COPY it'],ans:2,exp:'RUN --mount=type=secret,id=mysecret cat /run/secrets/mysecret mounts a secret temporarily during build. The secret never appears in image layers, unlike --build-arg which is cached.'},
+  {cat:'DOCKERFILE',q:'What does STOPSIGNAL do in a Dockerfile?',opts:['Defines the signal Docker sends to stop the container','Sets the health check signal','Defines log levels','Stops a specific RUN instruction'],ans:0,exp:'STOPSIGNAL sets the system call signal sent to the container to exit. Default is SIGTERM. Some apps handle SIGUSR1 or SIGINT better for graceful shutdown.'},
+  // NETWORKING (15)
+  {cat:'NETWORKING',q:'What does docker run -p 8080:80 mean?',opts:['Maps container port 8080 to host port 80','Maps host port 8080 to container port 80','Exposes both ports 8080 and 80','Creates a network bridge between the ports'],ans:1,exp:'Format is -p HOST:CONTAINER. So -p 8080:80 means traffic hitting port 8080 on your host machine is forwarded to port 80 inside the container.'},
+  {cat:'NETWORKING',q:'What is the default network driver for containers on a single host?',opts:['host','overlay','macvlan','bridge'],ans:3,exp:'By default, Docker uses the bridge driver. Each bridge network gets its own subnet and Docker acts as a DNS resolver for container names within the same network.'},
+  {cat:'NETWORKING',q:'What network mode gives a container direct access to the host network stack?',opts:['bridge','none','host','overlay'],ans:2,exp:'--network host removes network isolation. The container shares the host network namespace directly. Great for performance-sensitive tools but breaks container portability.'},
+  {cat:'NETWORKING',q:'What is an overlay network in Docker used for?',opts:['Connecting containers on the same host','Connecting containers across multiple Docker hosts (Swarm)','Creating isolated networks with no external access','Connecting Docker to the host network'],ans:1,exp:'Overlay networks span multiple Docker daemons, allowing containers on different hosts in a Swarm to communicate as if on the same local network. Backed by VXLAN tunneling.'},
+  {cat:'NETWORKING',q:'What does --network none do when running a container?',opts:['Uses the default bridge network','Removes all network interfaces from the container','Connects to all available networks','Uses host networking'],ans:1,exp:'--network none disables all networking for the container. The container gets no network interface except loopback. Useful for air-gapped processing tasks.'},
+  {cat:'NETWORKING',q:'How do containers on the same Docker network resolve each other?',opts:['By IP address only','By container ID','By container or service name via Docker internal DNS','By hostname defined in /etc/hosts'],ans:2,exp:'Docker has a built-in DNS server for user-defined networks. Containers can resolve each other by container name (or service name in Compose) automatically.'},
+  {cat:'NETWORKING',q:'What is macvlan networking in Docker?',opts:['A virtual LAN between containers','Assigns each container its own MAC address, making it appear as a physical device on the network','A deprecated networking mode','An overlay network variant'],ans:1,exp:'macvlan assigns each container a MAC address and connects it directly to the physical network. Containers appear as separate physical devices. Useful for legacy apps needing direct L2 access.'},
+  {cat:'NETWORKING',q:'What happens to container DNS when you use --network host?',opts:['Docker DNS still works','The container uses the host DNS settings directly','DNS is disabled','A custom DNS resolver is used'],ans:1,exp:'With --network host, the container shares the host network namespace completely, including DNS. It reads /etc/resolv.conf from the host directly.'},
+  {cat:'NETWORKING',q:'How do you connect a running container to an additional network?',opts:['docker network add','docker network connect <network> <container>','docker run --add-network','You must restart the container'],ans:1,exp:'docker network connect <network> <container> attaches a running container to another network without restarting it. The container then has interfaces on both networks.'},
+  {cat:'NETWORKING',q:'What port does Docker internal DNS listen on?',opts:['Port 53 inside containers','Port 8053 on the host','Port 2375','Port 5353 (mDNS)'],ans:0,exp:'Docker internal DNS resolver listens on port 53 inside the container. When a container does a DNS lookup, queries go to 127.0.0.11:53 (the embedded DNS server) on user-defined networks.'},
+  {cat:'NETWORKING',q:'What is the difference between published and exposed ports?',opts:['They are the same','EXPOSE documents the port; -p/ports: publishes it to the host','EXPOSE opens firewall rules; -p adds metadata','Published ports are for external traffic; exposed ports are internal only'],ans:1,exp:'EXPOSE is metadata only — no host binding. -p HOST:CONTAINER (or ports: in Compose) actually binds the container port to a host port, making it accessible externally.'},
+  {cat:'NETWORKING',q:'How do you publish a container port to a random available host port?',opts:['docker run -p :80 nginx','docker run -P nginx uses EXPOSE ports','docker run --random-port nginx','Both A and B are correct'],ans:3,exp:'-p :80 or -P both work. -P publishes all EXPOSEd ports to random host ports. Use docker port <container> to see which random port was assigned.'},
+  {cat:'NETWORKING',q:'What is the docker0 bridge?',opts:['The default bridge network created by Docker daemon','A Docker management API endpoint','A virtual overlay network','The Docker DNS resolver address'],ans:0,exp:'docker0 is the default bridge network interface created by Docker daemon on the host. Containers on the default bridge network connect through docker0, typically using 172.17.0.0/16 subnet.'},
+  {cat:'NETWORKING',q:'Why should you use user-defined networks instead of the default bridge?',opts:['The default bridge is deprecated','User-defined networks provide automatic DNS resolution by container name; default bridge uses only IP','User-defined networks are faster','The default bridge does not support multiple containers'],ans:1,exp:'On the default bridge, containers communicate by IP only. On user-defined bridge networks, Docker provides DNS so containers resolve each other by name — a critical difference for multi-container apps.'},
+  {cat:'NETWORKING',q:'What does --publish-all (-P) do?',opts:['Publishes all ports to port 80','Publishes all EXPOSEd ports to random ephemeral ports on the host','Exposes all container ports internally','Publishes to all network interfaces'],ans:1,exp:'-P (--publish-all) publishes every port listed in EXPOSE to a random available port on the host. Use docker port <container> to see the mapping.'},
+  // STORAGE (10)
+  {cat:'STORAGE',q:'What is the key difference between a volume and a bind mount?',opts:['Volumes are slower; bind mounts are faster','Volumes are managed by Docker; bind mounts link to a specific host path','Bind mounts persist data; volumes are ephemeral','There is no practical difference'],ans:1,exp:'Volumes are managed by Docker (/var/lib/docker/volumes/) — portable, shareable, easy to back up. Bind mounts directly mount a host directory path into the container.'},
+  {cat:'STORAGE',q:'What happens to data in a container with no volumes when deleted?',opts:['It is saved to the host automatically','It is lost permanently','It is moved to a dangling volume','It is backed up to an image layer'],ans:1,exp:'Container filesystems are ephemeral. Without a volume or bind mount, all writes go to the writable container layer, which is destroyed when the container is removed.'},
+  {cat:'STORAGE',q:'What is the correct way to share data between two containers?',opts:['Use docker cp','Use a named volume mounted in both containers','Write to the host filesystem','Containers cannot share data'],ans:1,exp:'Named volumes can be mounted into multiple containers simultaneously, allowing shared data. Both containers reference the same volume name in their run/compose config.'},
+  {cat:'STORAGE',q:'What is a tmpfs mount?',opts:['A temporary volume stored on disk','An in-memory filesystem that disappears when the container stops','A type of named volume','A read-only bind mount'],ans:1,exp:'tmpfs mounts store data in host memory only — never written to disk. Fast and ephemeral. Great for sensitive data (tokens, secrets) that should not persist or hit disk.'},
+  {cat:'STORAGE',q:'Where does Docker store named volumes by default on Linux?',opts:['/tmp/docker/volumes','/var/lib/docker/volumes','~/.docker/volumes','/etc/docker/volumes'],ans:1,exp:'Docker stores named volume data in /var/lib/docker/volumes/<volume_name>/_data on Linux. You can inspect a volume with docker volume inspect to find the exact Mountpoint.'},
+  {cat:'STORAGE',q:'What does docker volume prune do?',opts:['Removes all volumes including named ones','Removes only anonymous volumes not used by any container','Removes volumes older than 30 days','Compresses volume data'],ans:1,exp:'docker volume prune removes all anonymous (unnamed) volumes not currently used by any container. Named volumes are NOT removed unless you use --all flag.'},
+  {cat:'STORAGE',q:'What is a volume driver in Docker?',opts:['A filesystem format for volumes','A plugin that lets Docker volumes use external storage (NFS, AWS EBS, etc.)','The Docker daemon component managing volumes','A tool for volume encryption'],ans:1,exp:'Volume drivers are plugins extending Dockers volume system. They allow volumes to be backed by external storage: NFS, cloud block storage (EBS, GCE PD), distributed filesystems, etc.'},
+  {cat:'STORAGE',q:'What is the difference between anonymous and named volumes?',opts:['Anonymous volumes are faster','Named volumes are specified with a name; anonymous volumes get a random ID and are harder to manage','Anonymous volumes persist; named volumes are temporary','There is no difference'],ans:1,exp:'Named volumes (docker run -v mydata:/app/data) are easy to reference and manage. Anonymous volumes (-v /app/data) get a random ID hash — hard to identify and reuse.'},
+  {cat:'STORAGE',q:'How do you back up a Docker volume?',opts:['docker volume backup','Run a temporary container that mounts the volume and tars it to the host','Docker volumes cannot be backed up','Use docker commit'],ans:1,exp:'Common pattern: docker run --rm -v myvolume:/data -v $(pwd):/backup alpine tar czf /backup/backup.tar.gz /data. This mounts the volume and archives it to the host.'},
+  {cat:'STORAGE',q:'What does --mount vs -v do differently?',opts:['They are identical','--mount is more verbose and explicit; -v is shorthand with implicit behavior','--mount is for named volumes only','--mount is deprecated'],ans:1,exp:'--mount is explicit and readable: --mount type=volume,source=myvol,target=/data. -v is shorthand: -v myvol:/data. --mount fails fast on missing dirs; -v creates them. Docker recommends --mount.'},
+  // COMPOSE (15)
+  {cat:'COMPOSE',q:'What does depends_on guarantee in Docker Compose?',opts:['The dependent service is healthy before starting','Container startup order only — not that the service is ready','Both startup order and readiness','Nothing — it is deprecated'],ans:1,exp:'depends_on only controls start order. Use depends_on with condition: service_healthy and a healthcheck to wait until a service is actually ready to accept connections.'},
+  {cat:'COMPOSE',q:'In Docker Compose, how do containers resolve each other by hostname?',opts:['By container ID','By service name defined in compose.yaml','By IP address only','By container name with a random suffix'],ans:1,exp:'Docker Compose creates a default network and sets up DNS so containers can reach each other using the service name (e.g., db, redis, app) as the hostname.'},
+  {cat:'COMPOSE',q:'What does restart: always do in Docker Compose?',opts:['Restarts the container on a schedule','Restarts the container whenever it exits, regardless of exit code','Restarts only on failure','Same as restart: on-failure'],ans:1,exp:'restart: always makes Docker always restart the container when it exits (including on daemon startup after a host reboot). Use unless-stopped to not restart when manually stopped.'},
+  {cat:'COMPOSE',q:'What is the purpose of a healthcheck in Compose with depends_on?',opts:['Automatically restart failed containers','Ensure a service is fully ready before dependent services start','Monitor CPU and memory usage','Check network connectivity between services'],ans:1,exp:'With depends_on condition: service_healthy, Docker waits until the dependencys healthcheck passes before starting the dependent service. Essential for databases that need time to initialize.'},
+  {cat:'COMPOSE',q:'What is a Compose profile used for?',opts:['To define Docker resource profiles','To selectively start a subset of services using --profile flag','To set CPU/memory limits','To define network profiles'],ans:1,exp:'Profiles let you group optional services. E.g., a debug profile runs only when explicitly enabled: docker compose --profile debug up. Core services run always; profiled services run on demand.'},
+  {cat:'COMPOSE',q:'What does docker compose down -v do?',opts:['Stops services only','Stops and removes containers, networks, and also named volumes','Removes only anonymous volumes','Deletes the compose.yaml file'],ans:1,exp:'docker compose down removes containers and networks. Adding -v also removes named volumes defined in the compose file. Warning: this permanently deletes volume data.'},
+  {cat:'COMPOSE',q:'What is a compose override file?',opts:['A file that replaces the main compose.yaml','docker-compose.override.yaml is auto-merged, allowing environment-specific overrides','A file used only in production','A Compose v1 concept removed in v2'],ans:1,exp:'docker-compose.override.yaml is automatically merged with docker-compose.yaml. Use it for local dev overrides (volume mounts, debug ports) without modifying the main file.'},
+  {cat:'COMPOSE',q:'How do you scale a service to 3 replicas in Compose?',opts:['docker compose scale app=3','docker compose up --scale app=3','Add replicas: 3 to the service config','Both A and B'],ans:3,exp:'Both work. docker compose up --scale app=3 at runtime, or add deploy: replicas: 3 in the compose.yaml (requires Swarm or Compose v3). The --scale flag is common for local testing.'},
+  {cat:'COMPOSE',q:'What is the build context in a compose service?',opts:['The Dockerfile content','The directory sent to Docker daemon when building — typically the service directory','The Docker registry URL','The build stage name'],ans:1,exp:'The build context (build: . or build: context: ./myservice) defines which directory is sent to the Docker daemon. The Dockerfile is looked up there by default.'},
+  {cat:'COMPOSE',q:'What does the volumes: top-level key in compose.yaml define?',opts:['Volume mounts for a specific service','Named volumes that can be shared across services','Bind mount configurations','Volume driver settings only'],ans:1,exp:'Top-level volumes: declares named volumes managed by Docker. Individual services reference them in their own volumes: section. They persist across docker compose down (unless -v is used).'},
+  {cat:'COMPOSE',q:'What does env_file do in a compose service?',opts:['Defines environment variables inline','Loads environment variables from one or more external files','Sets the .env file path for variable substitution','Encrypts environment variables'],ans:1,exp:'env_file: .env.production loads KEY=VALUE pairs from a file into the container environment. Different from .env which handles variable substitution in compose.yaml itself.'},
+  {cat:'COMPOSE',q:'What is the difference between expose and ports in compose?',opts:['They are identical','expose makes ports available between services; ports publishes to the host','expose is for external traffic; ports is internal','expose is deprecated'],ans:1,exp:'expose: [3000] makes port 3000 available to other services on the network but NOT the host. ports: - "3000:3000" publishes to the host. Use expose for internal-only services.'},
+  {cat:'COMPOSE',q:'How do you view logs for a specific service in Compose?',opts:['docker compose log app','docker compose logs app','docker compose show logs app','docker logs compose_app'],ans:1,exp:'docker compose logs <service> shows logs for that service. Add -f to follow and --tail N to limit output. Without a service name, it shows all services interleaved.'},
+  {cat:'COMPOSE',q:'What is the networks: top-level key used for in compose?',opts:['Define which networks each service uses','Create named networks with custom drivers, IPAM, and settings','Enable network isolation','All of the above'],ans:3,exp:'The top-level networks: key creates named networks that services can join. You can configure driver (bridge/overlay), IPAM (custom subnets), labels, and whether to use an external pre-existing network.'},
+  {cat:'COMPOSE',q:'What does docker compose exec vs docker compose run do?',opts:['They are identical','exec runs a command in an existing running container; run starts a new one-off container','run is for services; exec is for containers','exec is deprecated'],ans:1,exp:'docker compose exec runs a command in an already-running service container. docker compose run starts a fresh container for a one-off command. run containers are removed with --rm.'},
+  // SECURITY (20)
+  {cat:'SECURITY',q:'Why should you avoid running containers as root?',opts:['Root containers use more memory','If the container is compromised, the attacker gains root access on the host','Root slows down container startup','Docker does not support running as root'],ans:1,exp:'A root process in a container, if it escapes the container namespace, has root on the host. Always use USER to specify a non-root user in your Dockerfile.'},
+  {cat:'SECURITY',q:'What is the risk of COPY . . without .dockerignore?',opts:['It causes a build error','Sensitive files like .env and node_modules get copied into the image','It makes the build slower only','COPY . . is deprecated'],ans:1,exp:'.dockerignore works like .gitignore. Without it, COPY . . can include .git, .env files, node_modules, and other sensitive or large directories into the image.'},
+  {cat:'SECURITY',q:'What does the --read-only flag do?',opts:['Prevents reading logs','Makes the container filesystem read-only, preventing writes','Disables volume mounts','Restricts container networking'],ans:1,exp:'--read-only mounts the containers root filesystem as read-only. Combined with --tmpfs for temp files, this is a strong hardening technique that prevents runtime modification.'},
+  {cat:'SECURITY',q:'What is the principle of least privilege in Docker?',opts:['Use the smallest possible base image','Give containers only the permissions and capabilities they need','Always use --privileged for production','Limit container network access only'],ans:1,exp:'Least privilege means containers run as non-root, drop unnecessary Linux capabilities (--cap-drop ALL, --cap-add only what is needed), use read-only filesystems, and limit resource access.'},
+  {cat:'SECURITY',q:'What does --privileged do when running a container?',opts:['Grants admin access to Docker Hub','Gives the container full access to host devices and disables security profiles','Enables GPU access only','Allows running as root'],ans:1,exp:'--privileged gives the container nearly unrestricted access to the host: all capabilities, all devices, no seccomp/AppArmor. Avoid in production — use specific --cap-add and --device instead.'},
+  {cat:'SECURITY',q:'What is seccomp in the context of Docker security?',opts:['A container scanning tool','A Linux syscall filtering mechanism that limits which system calls a container can make','A Docker network security feature','A certificate management system'],ans:1,exp:'Seccomp (secure computing mode) is a Linux kernel feature. Docker applies a default seccomp profile that blocks ~44 dangerous syscalls. You can apply custom profiles or disable it (not recommended).'},
+  {cat:'SECURITY',q:'What tool is commonly used to scan Docker images for CVEs?',opts:['docker scan (powered by Snyk) or Trivy','docker inspect','docker history','docker verify'],ans:0,exp:'Trivy (by Aqua Security) and Snyk are the most popular. docker scout is Dockers built-in scanner. All scan image layers for known CVEs in OS packages and application dependencies.'},
+  {cat:'SECURITY',q:'Why is using :latest tag a security risk?',opts:['It is not a security risk','latest can pull a different, potentially vulnerable image on each build/pull','latest images skip security scanning','Docker Hub blocks latest in production'],ans:1,exp:'latest is mutable — it can point to a different image version anytime. Pin to specific versions (node:20.11.0-alpine) or digests (node@sha256:abc123) for reproducible, auditable builds.'},
+  {cat:'SECURITY',q:'What is a Docker content trust (DCT)?',opts:['A system for encrypting volumes','A framework for signing and verifying image integrity using Notary','A Docker Hub subscription feature','A container runtime security feature'],ans:1,exp:'Docker Content Trust uses Notary to sign images. Enable with DOCKER_CONTENT_TRUST=1. Only signed images can be pulled/run. Protects against supply chain attacks and tampered images.'},
+  {cat:'SECURITY',q:'What is the risk of storing secrets in ENV instructions?',opts:['There is no risk','ENV values are baked into the image and visible in docker inspect and docker history','ENV variables are encrypted automatically','Only root can see ENV values'],ans:1,exp:'ENV values persist in the image and are visible via docker inspect and docker history. Anyone with image access sees them. Use Docker secrets, vault solutions, or runtime --env injection instead.'},
+  {cat:'SECURITY',q:'What does --cap-drop ALL --cap-add NET_BIND_SERVICE do?',opts:['Removes all permissions','Drops all Linux capabilities then adds back only the ability to bind ports below 1024','Enables privileged mode','Drops network capabilities only'],ans:1,exp:'Best practice: drop ALL capabilities then add back only what the app needs. NET_BIND_SERVICE allows binding ports < 1024. Common caps: NET_BIND_SERVICE, CHOWN, SETUID, SETGID.'},
+  {cat:'SECURITY',q:'What is AppArmor in Docker context?',opts:['A Docker plugin for auth','A Linux MAC (Mandatory Access Control) system that restricts container actions via profiles','An alternative to seccomp','A Docker Enterprise feature'],ans:1,exp:'AppArmor is a Linux security module. Docker applies a default AppArmor profile (docker-default) that restricts dangerous operations. Custom profiles provide fine-grained control over file access and capabilities.'},
+  {cat:'SECURITY',q:'What should you do before deploying a Docker image to production?',opts:['Just run it — Docker is secure by default','Scan for CVEs, verify base image source, check for secrets in layers, ensure non-root user','Only check if it builds successfully','Just update to the latest base image'],ans:1,exp:'Production checklist: CVE scan (Trivy/Scout), non-root user, no secrets in layers, pinned base image, minimal packages, read-only filesystem where possible, resource limits set.'},
+  {cat:'SECURITY',q:'What is a rootless Docker setup?',opts:['Running containers as non-root user','Running the Docker daemon itself as a non-root user, eliminating daemon privilege escalation risk','A mode that disables all security features','A Docker Desktop feature only'],ans:1,exp:'Rootless mode runs the Docker daemon and containers as a non-root user. If the daemon is compromised, the attacker does not gain root on the host. Supported since Docker 20.10.'},
+  {cat:'SECURITY',q:'What does USER 1000:1000 mean in a Dockerfile?',opts:['Set username and password','Set the user and group ID for running the container process','Set file permissions to 1000','Create user with ID 1000'],ans:1,exp:'USER <uid>:<gid> sets the user and group for subsequent RUN/CMD/ENTRYPOINT instructions. Using numeric IDs (not names) works across images without requiring the user to exist in /etc/passwd.'},
+  {cat:'SECURITY',q:'What does the --no-new-privileges flag do?',opts:['Prevents the container from installing new packages','Prevents container processes from gaining additional privileges via setuid/setgid binaries','Disables privilege mode','Removes all capabilities'],ans:1,exp:'--security-opt no-new-privileges:true prevents container processes from escalating privileges via setuid/setgid binaries (like sudo). An important defense-in-depth measure.'},
+  {cat:'SECURITY',q:'What is image signing with Cosign?',opts:['Encrypting image layers','Cryptographically signing an image so consumers can verify it was not tampered with','A Docker Hub auth feature','Signing Dockerfiles for audit trails'],ans:1,exp:'Cosign (by Sigstore) creates a cryptographic signature for an OCI image. Consumers verify the signature before pulling. Part of software supply chain security (SLSA compliance).'},
+  {cat:'SECURITY',q:'Why should you avoid ADD with remote URLs in Dockerfiles?',opts:['ADD is deprecated','Remote URLs bypass integrity verification — the content can change or be replaced with malicious content','ADD remote URLs are slower','Docker blocks remote URLs in ADD'],ans:1,exp:'ADD https://example.com/file downloads a file without integrity verification. The URL content can change. Use RUN curl -fsSL <url> | sha256sum -c - to verify checksums explicitly.'},
+  {cat:'SECURITY',q:'What is the risk of exposing the Docker socket (/var/run/docker.sock) to a container?',opts:['Increased latency','The container can control the Docker daemon — effectively giving it root access to the host','It breaks the container network','The socket gets corrupted'],ans:1,exp:'Mounting the Docker socket gives the container full control over Docker: it can spawn privileged containers, escape to host, delete volumes, read secrets from other containers. Avoid unless absolutely necessary.'},
+  {cat:'SECURITY',q:'What does docker bench security do?',opts:['Scans images for CVEs','Runs a CIS Docker Benchmark audit of host and daemon configuration','Encrypts container data','Tests network security rules'],ans:1,exp:'Docker Bench Security (github.com/docker/docker-bench-security) runs automated checks against CIS Docker Benchmark: daemon configuration, container runtime settings, image hygiene, and more.'},
 ];
 
-let currentQ = 0, xp = 0, answered = false;
+// ══════════════════════════════════════════════
+//  QUIZ ENGINE
+// ══════════════════════════════════════════════
+const QUIZ_CATS = ['ALL','BASICS','DOCKERFILE','NETWORKING','STORAGE','COMPOSE','SECURITY'];
+let currentQ = 0, xp = 0, answered = false, activeFilter = 'ALL', filteredQuiz = [];
+
+function initQuizFilters() {
+  const el = document.getElementById('quiz-filters');
+  if (!el) return;
+  el.innerHTML = QUIZ_CATS.map(c =>
+    `<button class="qf-btn${c==='ALL'?' active qf-ALL':''} qf-${c}" onclick="setQuizFilter('${c}')">${c === 'ALL' ? 'All Topics' : c.charAt(0)+c.slice(1).toLowerCase()}</button>`
+  ).join('');
+  applyFilter();
+}
+
+function setQuizFilter(cat) {
+  activeFilter = cat;
+  document.querySelectorAll('.qf-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll(`.qf-${cat}`).forEach(b => b.classList.add('active'));
+  applyFilter();
+}
+
+function applyFilter() {
+  filteredQuiz = activeFilter === 'ALL' ? [...QUIZ_ALL] : QUIZ_ALL.filter(q => q.cat === activeFilter);
+  // Shuffle
+  for (let i = filteredQuiz.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [filteredQuiz[i], filteredQuiz[j]] = [filteredQuiz[j], filteredQuiz[i]];
+  }
+  currentQ = 0; xp = 0; answered = false;
+  const countEl = document.getElementById('quiz-count');
+  if (countEl) countEl.textContent = `${filteredQuiz.length} questions in this set`;
+  if (document.getElementById('q-xp')) document.getElementById('q-xp').textContent = '⚡ 0 XP';
+  document.getElementById('quiz-game').style.display = 'block';
+  document.getElementById('quiz-result').style.display = 'none';
+  renderQuestion();
+}
 
 function renderQuestion() {
-  const q = QUIZ[currentQ];
-  document.getElementById('q-fill').style.width = ((currentQ + 1) / QUIZ.length * 100) + '%';
-  document.getElementById('q-num').textContent = `Question ${currentQ + 1} / ${QUIZ.length}`;
+  if (!filteredQuiz.length) return;
+  const q = filteredQuiz[currentQ];
+  document.getElementById('q-fill').style.width = ((currentQ + 1) / filteredQuiz.length * 100) + '%';
+  document.getElementById('q-num').textContent = `Question ${currentQ + 1} / ${filteredQuiz.length}`;
   document.getElementById('q-cat').textContent = q.cat;
   document.getElementById('q-text').textContent = q.q;
   document.getElementById('q-explain').textContent = q.exp;
@@ -945,7 +1141,7 @@ function renderQuestion() {
   answered = false;
   const keys = ['A','B','C','D'];
   document.getElementById('q-opts').innerHTML = q.opts.map((o,i) =>
-    `<div class="q-opt" onclick="answerQ(this,${i === q.ans})">
+    `<div class="q-opt" onclick="answerQ(this,${i===q.ans})">
       <span class="opt-key">${keys[i]}</span>${o}
     </div>`).join('');
 }
@@ -956,7 +1152,7 @@ function answerQ(el, correct) {
   document.querySelectorAll('.q-opt').forEach(o => o.classList.add('disabled'));
   el.classList.add(correct ? 'correct' : 'wrong');
   if (!correct) {
-    const q = QUIZ[currentQ];
+    const q = filteredQuiz[currentQ];
     document.querySelectorAll('.q-opt')[q.ans].classList.add('correct');
   } else {
     xp += 10;
@@ -968,34 +1164,27 @@ function answerQ(el, correct) {
 
 function nextQuestion() {
   currentQ++;
-  if (currentQ >= QUIZ.length) {
-    showResult();
-  } else {
-    renderQuestion();
-  }
+  if (currentQ >= filteredQuiz.length) showResult();
+  else renderQuestion();
 }
 
 function skipQuestion() {
   currentQ++;
-  if (currentQ >= QUIZ.length) showResult();
+  if (currentQ >= filteredQuiz.length) showResult();
   else renderQuestion();
 }
 
 function showResult() {
   document.getElementById('quiz-game').style.display = 'none';
   document.getElementById('quiz-result').style.display = 'block';
-  const pct = Math.round(xp / (QUIZ.length * 10) * 100);
+  const pct = Math.round(xp / (filteredQuiz.length * 10) * 100);
   document.getElementById('result-score').textContent = xp + ' XP';
-  const labels = pct >= 90 ? '🏆 Container Expert!' : pct >= 70 ? '🎯 Solid Knowledge!' : pct >= 50 ? '📚 Keep Learning!' : '🌱 Just Getting Started';
-  document.getElementById('result-label').textContent = `${pct}% correct — ${labels}`;
+  const label = pct >= 90 ? '🏆 Container Expert!' : pct >= 70 ? '🎯 Solid Knowledge!' : pct >= 50 ? '📚 Keep Learning!' : '🌱 Just Getting Started';
+  document.getElementById('result-label').textContent = `${pct}% correct — ${label}`;
 }
 
 function restartQuiz() {
-  currentQ = 0; xp = 0;
-  document.getElementById('q-xp').textContent = '⚡ 0 XP';
-  document.getElementById('quiz-game').style.display = 'block';
-  document.getElementById('quiz-result').style.display = 'none';
-  renderQuestion();
+  applyFilter();
 }
 
 // ══════════════════════════════════════════════
@@ -1220,17 +1409,132 @@ function toggleModule(i) {
 }
 
 // ══════════════════════════════════════════════
-//  SCROLL REVEAL
+//  BEST PRACTICES DATA
 // ══════════════════════════════════════════════
-const observer = new IntersectionObserver(entries =>
-  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
-  { threshold: 0.1 });
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+const BP_DATA = [
+  { cat:'Image & Dockerfile', icon:'🏗️', color:'rgba(29,99,237,.15)', rules:[
+    {sev:'critical',text:'<strong>Never use :latest tag</strong> in production. Pin to a specific version like <code>node:20.11.0-alpine</code> or a digest <code>node@sha256:abc</code> for reproducible, auditable builds.'},
+    {sev:'critical',text:'<strong>Always add a .dockerignore file.</strong> Exclude <code>.git</code>, <code>.env</code>, <code>node_modules</code>, <code>*.log</code> to prevent secrets leaking into the image and reduce build context size.'},
+    {sev:'important',text:'<strong>Use multi-stage builds</strong> to separate build and runtime stages. Final image should contain only the compiled artifact and runtime dependencies — not build tools, compilers, or test frameworks.'},
+    {sev:'important',text:'<strong>Optimize layer caching:</strong> Copy dependency manifests first (<code>package.json</code>, <code>requirements.txt</code>), install dependencies, then copy source code. Code changes do not bust the dependency cache.'},
+    {sev:'important',text:'<strong>Use slim or alpine base images.</strong> <code>node:20-alpine</code> (~7MB) vs <code>node:20</code> (~900MB). Smaller images mean faster pulls, less attack surface, and lower registry storage costs.'},
+    {sev:'recommended',text:'<strong>Chain RUN commands</strong> with <code>&&</code> and clean up in the same layer: <code>RUN apt-get update && apt-get install -y pkg && rm -rf /var/lib/apt/lists/*</code> to prevent caching stale package lists.'},
+    {sev:'recommended',text:'<strong>Use COPY over ADD</strong> unless you specifically need ADD features (remote URL fetch or tar extraction). COPY is explicit and predictable.'},
+    {sev:'recommended',text:'<strong>Add HEALTHCHECK</strong> to every production image. Orchestrators use this to detect unhealthy containers and stop routing traffic to them.'},
+  ]},
+  { cat:'Security', icon:'🔒', color:'rgba(245,54,92,.12)', rules:[
+    {sev:'critical',text:'<strong>Never run containers as root.</strong> Add <code>USER node</code> (or a non-root UID like <code>USER 1000:1000</code>) before CMD/ENTRYPOINT in every production Dockerfile.'},
+    {sev:'critical',text:'<strong>Never store secrets in ENV instructions.</strong> ENV values are baked into the image and visible via <code>docker inspect</code> and <code>docker history</code>. Use Docker secrets, Vault, or runtime injection instead.'},
+    {sev:'critical',text:'<strong>Scan images for CVEs</strong> before every deployment using Trivy, Docker Scout, or Snyk. Integrate scanning into your CI pipeline and fail the build on critical vulnerabilities.'},
+    {sev:'critical',text:'<strong>Never expose the Docker socket</strong> (<code>/var/run/docker.sock</code>) to containers unless absolutely necessary. It gives full Docker daemon control — effectively root access to the host.'},
+    {sev:'important',text:'<strong>Drop all Linux capabilities</strong> and add back only what the app needs: <code>--cap-drop ALL --cap-add NET_BIND_SERVICE</code>. Default Docker capabilities include many that are rarely needed.'},
+    {sev:'important',text:'<strong>Use read-only filesystems:</strong> <code>docker run --read-only</code> prevents runtime modification. Add <code>--tmpfs /tmp</code> for write access to temp directories only.'},
+    {sev:'important',text:'<strong>Pin base image digests</strong> in critical production workloads: <code>FROM node:20-alpine@sha256:abc123</code>. Tags are mutable; digests are immutable content addresses.'},
+    {sev:'recommended',text:'<strong>Enable Docker Content Trust</strong> (<code>DOCKER_CONTENT_TRUST=1</code>) to only pull and run signed images. Protects against supply chain attacks.'},
+    {sev:'recommended',text:'<strong>Use --no-new-privileges:</strong> <code>--security-opt no-new-privileges:true</code> prevents processes inside the container from gaining additional privileges via setuid/setgid binaries.'},
+  ]},
+  { cat:'Networking', icon:'🌐', color:'rgba(17,205,239,.1)', rules:[
+    {sev:'critical',text:'<strong>Never use --privileged</strong> unless absolutely required. It disables all security profiles and gives the container near-unrestricted host access. Use specific <code>--cap-add</code> and <code>--device</code> instead.'},
+    {sev:'important',text:'<strong>Use user-defined bridge networks</strong> instead of the default bridge. User-defined networks provide automatic DNS resolution by container/service name — the default bridge uses IP only.'},
+    {sev:'important',text:'<strong>Avoid --network host</strong> in production. It removes all network isolation. Prefer explicit port publishing (<code>-p HOST:CONTAINER</code>) for controlled exposure.'},
+    {sev:'important',text:'<strong>Only publish ports that need to be public.</strong> Use <code>expose:</code> in Compose for internal service-to-service communication; <code>ports:</code> only for services that need host access.'},
+    {sev:'recommended',text:'<strong>Isolate services with separate networks.</strong> Frontend should not be on the same network as your database. Use multiple networks to enforce least-privilege network access.'},
+    {sev:'recommended',text:'<strong>Use EXPOSE for documentation.</strong> Even though it does not publish ports, EXPOSE communicates intended ports to operators and tooling. Always include it in Dockerfiles.'},
+  ]},
+  { cat:'Storage & Volumes', icon:'💾', color:'rgba(247,148,29,.1)', rules:[
+    {sev:'critical',text:'<strong>Never store sensitive data in container layers.</strong> Container layers are part of the image and accessible to anyone who pulls it. Use volumes or external secrets management.'},
+    {sev:'important',text:'<strong>Use named volumes for persistent data,</strong> not anonymous volumes. Named volumes are easy to inspect, back up, and reference across containers.'},
+    {sev:'important',text:'<strong>Back up volumes regularly.</strong> Use the pattern: <code>docker run --rm -v myvol:/data -v $(pwd):/backup alpine tar czf /backup/backup.tar.gz /data</code>.'},
+    {sev:'important',text:'<strong>Use tmpfs for sensitive in-memory data</strong> (tokens, session data) that should never hit disk: <code>docker run --tmpfs /run/secrets:rw,noexec,nosuid,size=65536k</code>.'},
+    {sev:'recommended',text:'<strong>Use --mount instead of -v</strong> for explicit, readable volume definitions. It fails fast on missing directories and makes options obvious.'},
+    {sev:'recommended',text:'<strong>Set appropriate file permissions</strong> on volume-mounted files. Containers running as non-root users need ownership set correctly, often via an entrypoint script with chown.'},
+  ]},
+  { cat:'Docker Compose', icon:'🎼', color:'rgba(83,74,183,.12)', rules:[
+    {sev:'critical',text:'<strong>Never commit .env files to source control.</strong> Use .env.example with placeholder values. Add .env to .gitignore. Load secrets from a secrets manager at deploy time.'},
+    {sev:'important',text:'<strong>Use healthchecks with depends_on.</strong> <code>depends_on</code> alone only controls start order, not readiness. Add <code>condition: service_healthy</code> with a proper <code>healthcheck:</code> definition.'},
+    {sev:'important',text:'<strong>Set resource limits</strong> on every service: <code>deploy: resources: limits: cpus: "0.5" memory: 512M</code>. Prevents one misbehaving container from starving others.'},
+    {sev:'important',text:'<strong>Use override files for environment differences.</strong> Keep <code>docker-compose.yaml</code> as the base, <code>docker-compose.override.yaml</code> for local dev, <code>docker-compose.prod.yaml</code> for production.'},
+    {sev:'recommended',text:'<strong>Use profiles</strong> to group optional services (monitoring, debug tools) that should not run in production by default: <code>profiles: [debug]</code>.'},
+    {sev:'recommended',text:'<strong>Specify explicit network names</strong> in compose. Default network names include the project directory prefix, which changes between environments and can cause confusion.'},
+    {sev:'recommended',text:'<strong>Use restart: unless-stopped</strong> for production services instead of <code>restart: always</code>. It respects intentional manual stops and avoids restart loops during maintenance.'},
+  ]},
+  { cat:'Performance & CI/CD', icon:'🚀', color:'rgba(45,206,137,.1)', rules:[
+    {sev:'important',text:'<strong>Use BuildKit for all builds.</strong> Enable with <code>DOCKER_BUILDKIT=1</code> or in daemon config. Provides parallel builds, improved caching, and secret support.'},
+    {sev:'important',text:'<strong>Cache dependencies in CI.</strong> Use <code>--cache-from</code> and <code>--cache-to</code> with a registry or local cache to avoid reinstalling packages on every pipeline run.'},
+    {sev:'important',text:'<strong>Use --no-install-recommends</strong> with apt-get to skip recommended but unnecessary packages. Reduces image size significantly: <code>apt-get install -y --no-install-recommends pkg</code>.'},
+    {sev:'recommended',text:'<strong>Set resource limits in production</strong> with <code>--memory</code> and <code>--cpus</code>. Unconstrained containers can starve other services on shared hosts.'},
+    {sev:'recommended',text:'<strong>Use production npm/pip install flags:</strong> <code>npm ci --only=production</code>, <code>pip install --no-cache-dir</code>. Avoids dev dependencies and build caches in the final image.'},
+    {sev:'recommended',text:'<strong>Tag images with semantic versions AND git SHAs</strong> in CI: <code>myapp:1.2.3</code> and <code>myapp:abc1234</code>. Makes rollbacks and debugging trivial.'},
+    {sev:'recommended',text:'<strong>Use multi-platform builds</strong> with <code>docker buildx</code> to support linux/amd64 and linux/arm64. Essential for M-chip Mac development and ARM cloud instances.'},
+  ]},
+];
+
+let bpRendered = false;
+let activeBpFilter = 'ALL';
+
+function renderBestPractices() {
+  if (bpRendered) return;
+  bpRendered = true;
+  const cats = ['ALL', ...BP_DATA.map(b => b.cat)];
+  document.getElementById('bp-filters').innerHTML = cats.map(c =>
+    `<button class="bp-filter${c==='ALL'?' active':''}" onclick="filterBP('${c}')">${c==='ALL'?'All Categories':c}</button>`
+  ).join('');
+  renderBPCards();
+}
+
+function filterBP(cat) {
+  activeBpFilter = cat;
+  document.querySelectorAll('.bp-filter').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderBPCards();
+}
+
+function renderBPCards() {
+  const filtered = activeBpFilter === 'ALL' ? BP_DATA : BP_DATA.filter(b => b.cat === activeBpFilter);
+  const sevLabel = {critical:'Critical',important:'Important',recommended:'Recommended'};
+  const sevClass = {critical:'sev-critical',important:'sev-important',recommended:'sev-recommended'};
+  const dotColor = {critical:'var(--red)',important:'var(--orange)',recommended:'var(--blue-l)'};
+  document.getElementById('bp-grid').innerHTML = filtered.map((section, si) =>
+    `<div class="bp-card">
+      <div class="bp-card-top" onclick="toggleBP(${si})">
+        <div class="bp-icon" style="background:${section.color}">${section.icon}</div>
+        <div class="bp-info">
+          <div class="bp-title">${section.cat}</div>
+          <div class="bp-meta">${section.rules.length} rules · ${section.rules.filter(r=>r.sev==='critical').length} critical</div>
+        </div>
+        <div class="mod-arrow" id="bparrow-${si}">▸</div>
+      </div>
+      <div class="bp-body open" id="bpbody-${si}">
+        ${section.rules.map(r => `
+          <div class="bp-rule">
+            <div class="bp-dot" style="background:${dotColor[r.sev]}"></div>
+            <div class="bp-rule-text">${r.text}</div>
+            <span class="bp-severity ${sevClass[r.sev]}">${sevLabel[r.sev]}</span>
+          </div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+function toggleBP(i) {
+  const body = document.getElementById('bpbody-' + i);
+  const arrow = document.getElementById('bparrow-' + i);
+  const open = body.classList.toggle('open');
+  arrow.style.transform = open ? 'rotate(90deg)' : '';
+  arrow.style.transition = '.3s';
+}
 
 // ══════════════════════════════════════════════
 //  INIT
 // ══════════════════════════════════════════════
-renderQuestion();
+initQuizFilters();
+// Apply saved theme icon
+(function(){ if(document.documentElement.classList.contains('light')) document.getElementById('theme-btn').textContent='🌞'; })();
+
+// Scroll reveal
+const observer = new IntersectionObserver(entries =>
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); }),
+  { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 </script>
 </body>
 </html>
