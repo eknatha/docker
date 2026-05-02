@@ -285,6 +285,102 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:1.
 .qf-COMPOSE{background:#993C1D!important}
 .qf-SECURITY{background:#A32D2D!important}
 .quiz-count{font-size:12px;color:var(--muted);margin-bottom:1rem}
+
+/* ── MOBILE BOTTOM NAV ── */
+.bottom-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:300;
+  background:var(--nav-bg);backdrop-filter:blur(20px);
+  border-top:1px solid var(--border);
+  padding:6px 0 env(safe-area-inset-bottom,6px)}
+.bottom-nav-inner{display:flex;justify-content:space-around;align-items:center}
+.bnav-item{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 10px;
+  cursor:pointer;color:var(--muted);transition:.2s;border:none;background:none;font-family:var(--mono);
+  border-radius:8px;min-width:52px}
+.bnav-item:hover,.bnav-item.active{color:var(--blue-l)}
+.bnav-item.active .bnav-icon{background:rgba(29,99,237,.15);color:var(--blue)}
+.bnav-icon{font-size:18px;width:36px;height:28px;border-radius:14px;display:flex;align-items:center;justify-content:center;transition:.2s}
+.bnav-label{font-size:9px;letter-spacing:.04em;text-transform:uppercase}
+@media(max-width:768px){
+  .bottom-nav{display:block}
+  .nav-tabs{display:none}
+  .nav-badge{display:none}
+  .page{padding-bottom:72px}
+}
+
+/* ── DCA CERT PREP PAGE ── */
+.dca-wrap{max-width:1000px;margin:0 auto;padding:2.5rem 2rem}
+.dca-hero{background:linear-gradient(135deg,rgba(29,99,237,.12),rgba(29,99,237,.04));
+  border:1px solid rgba(29,99,237,.25);border-radius:14px;padding:2rem;margin-bottom:2rem;
+  display:flex;gap:2rem;align-items:center;flex-wrap:wrap}
+.dca-badge{width:80px;height:80px;background:var(--blue);border-radius:16px;
+  display:flex;align-items:center;justify-content:center;font-size:40px;flex-shrink:0}
+.dca-hero-info h2{font-family:var(--display);font-size:1.6rem;font-weight:800;margin-bottom:6px}
+.dca-hero-info p{font-size:13px;color:var(--muted);line-height:1.7;max-width:540px}
+.dca-meta{display:flex;gap:1rem;flex-wrap:wrap;margin-top:12px}
+.dca-tag{font-size:11px;padding:4px 12px;border-radius:20px;
+  background:rgba(29,99,237,.12);color:var(--blue-l);border:1px solid rgba(29,99,237,.2)}
+.dca-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-bottom:2rem}
+.dca-domain{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden}
+.dca-domain-top{padding:16px 18px;cursor:pointer;display:flex;align-items:center;gap:12px;transition:.15s}
+.dca-domain-top:hover{background:var(--surface)}
+.dca-domain-num{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-size:13px;font-weight:800;flex-shrink:0}
+.dca-domain-info{flex:1}
+.dca-domain-title{font-size:13px;font-weight:600;margin-bottom:2px}
+.dca-domain-pct{font-size:11px;color:var(--muted)}
+.dca-pct-bar{height:3px;background:var(--bg3);border-radius:2px;margin:10px 18px 0;overflow:hidden}
+.dca-pct-fill{height:100%;border-radius:2px;transition:.5s}
+.dca-domain-body{display:none;padding:0 18px 14px;border-top:1px solid var(--border)}
+.dca-domain-body.open{display:block}
+.dca-topic-list{padding:10px 0;list-style:none}
+.dca-topic-list li{padding:5px 0;font-size:12px;color:var(--muted);display:flex;align-items:flex-start;gap:8px;border-bottom:1px solid var(--border)}
+.dca-topic-list li:last-child{border-bottom:none}
+.dca-topic-list li::before{content:'▸';color:var(--blue);flex-shrink:0;font-size:10px;margin-top:2px}
+.dca-tips{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:2rem}
+.dca-tips h3{font-family:var(--display);font-size:1rem;font-weight:800;margin-bottom:14px;color:var(--text)}
+.tip-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+.tip-card{background:var(--bg3);border-radius:8px;padding:14px;border:1px solid var(--border)}
+.tip-card-title{font-size:12px;font-weight:600;margin-bottom:6px;color:var(--text)}
+.tip-card-body{font-size:12px;color:var(--muted);line-height:1.6}
+.dca-resources{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:22px}
+.dca-resources h3{font-family:var(--display);font-size:1rem;font-weight:800;margin-bottom:14px}
+.resource-list{display:flex;flex-direction:column;gap:8px}
+.resource-item{display:flex;align-items:center;gap:12px;padding:10px 14px;
+  background:var(--bg3);border-radius:8px;border:1px solid var(--border);
+  transition:.15s;cursor:pointer}
+.resource-item:hover{border-color:var(--blue)}
+.resource-icon{font-size:16px;flex-shrink:0}
+.resource-name{font-size:13px;font-weight:500}
+.resource-desc{font-size:11px;color:var(--muted)}
+
+/* ── DOCKERFILE LIBRARY PAGE ── */
+.lib-wrap{max-width:1100px;margin:0 auto;padding:2.5rem 2rem}
+.lib-filter-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.5rem}
+.lib-filter{padding:6px 14px;border-radius:20px;font-size:12px;font-family:var(--mono);cursor:pointer;
+  border:1px solid var(--border2);background:transparent;color:var(--muted);transition:.2s}
+.lib-filter:hover{color:var(--text)}
+.lib-filter.active{background:var(--orange);color:#000;border-color:var(--orange)}
+.lib-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:14px}
+.lib-card{background:var(--bg2);border:1px solid var(--border);border-radius:12px;overflow:hidden;transition:.2s}
+.lib-card:hover{border-color:var(--border2)}
+.lib-card-top{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px}
+.lib-lang-badge{padding:4px 10px;border-radius:6px;font-size:11px;font-weight:600;font-family:var(--mono);flex-shrink:0}
+.lib-card-title{font-size:13px;font-weight:600;flex:1}
+.lib-card-meta{font-size:11px;color:var(--muted)}
+.lib-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px}
+.lib-tag{font-size:10px;padding:2px 7px;background:var(--bg3);border:1px solid var(--border);border-radius:4px;color:var(--muted)}
+.lib-code-wrap{position:relative}
+.lib-code{padding:16px 18px;font-size:11.5px;color:var(--text);line-height:1.8;
+  overflow-x:auto;white-space:pre;font-family:var(--mono);max-height:320px;overflow-y:auto}
+.lib-copy-btn{position:absolute;top:10px;right:10px;padding:5px 12px;border-radius:6px;
+  background:var(--bg3);border:1px solid var(--border2);color:var(--muted);
+  font-size:11px;cursor:pointer;font-family:var(--mono);transition:.2s}
+.lib-copy-btn:hover{color:var(--text);border-color:var(--muted)}
+.lib-notes{padding:12px 18px;border-top:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.6;background:var(--bg3)}
+.lib-notes strong{color:var(--text)}
+.df-kw{color:var(--blue-l)}
+.df-cmt{color:var(--muted);font-style:italic}
+.df-str{color:var(--green)}
+.df-val{color:var(--orange)}
 </style>
 </head>
 <body>
@@ -302,10 +398,39 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:1.
     <button class="nav-tab" onclick="showPage('cheatsheet')" id="tab-cheatsheet">⌘ Cheatsheet</button>
     <button class="nav-tab" onclick="showPage('learn')" id="tab-learn">📚 Learn</button>
     <button class="nav-tab" onclick="showPage('bestpractices')" id="tab-bestpractices">✅ Best Practices</button>
+    <button class="nav-tab" onclick="showPage('library')" id="tab-library">📂 Library</button>
+    <button class="nav-tab" onclick="showPage('dca')" id="tab-dca">🏅 DCA Prep</button>
   </div>
   <div class="nav-right">
     <button class="theme-btn" onclick="toggleTheme()" id="theme-btn" title="Toggle theme">🌙</button>
     <span class="nav-badge">Free · No signup</span>
+  </div>
+</nav>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <button class="bnav-item active" onclick="showPage('home')" id="bnav-home">
+      <span class="bnav-icon">🏠</span><span class="bnav-label">Home</span>
+    </button>
+    <button class="bnav-item" onclick="showPage('tools')" id="bnav-tools">
+      <span class="bnav-icon">⚙️</span><span class="bnav-label">Tools</span>
+    </button>
+    <button class="bnav-item" onclick="showPage('quiz')" id="bnav-quiz">
+      <span class="bnav-icon">🧠</span><span class="bnav-label">Quiz</span>
+    </button>
+    <button class="bnav-item" onclick="showPage('cheatsheet')" id="bnav-cheatsheet">
+      <span class="bnav-icon">⌘</span><span class="bnav-label">Cheat</span>
+    </button>
+    <button class="bnav-item" onclick="showPage('library')" id="bnav-library">
+      <span class="bnav-icon">📂</span><span class="bnav-label">Library</span>
+    </button>
+    <button class="bnav-item" onclick="showPage('dca')" id="bnav-dca">
+      <span class="bnav-icon">🏅</span><span class="bnav-label">DCA</span>
+    </button>
+    <button class="bnav-item" onclick="showPage('bestpractices')" id="bnav-bestpractices">
+      <span class="bnav-icon">✅</span><span class="bnav-label">Guides</span>
+    </button>
   </div>
 </nav>
 
@@ -670,6 +795,100 @@ CMD ["python", "app.py"]</textarea>
   </div>
 </div>
 
+<!-- ═══════════════════ DOCKERFILE LIBRARY PAGE ═══════════════════ -->
+<div class="page" id="page-library">
+  <div class="lib-wrap">
+    <p class="sec-tag">// Real-World Dockerfile Library</p>
+    <h2 class="sec-title" style="margin-bottom:.5rem">Production Dockerfiles</h2>
+    <p style="color:var(--muted);font-size:13px;margin-bottom:1.5rem">Battle-tested, production-ready Dockerfiles. Click to copy. All use multi-stage builds, non-root users, and optimal caching.</p>
+    <div class="lib-filter-row" id="lib-filters"></div>
+    <div class="lib-grid" id="lib-grid"></div>
+  </div>
+</div>
+
+<!-- ═══════════════════ DCA CERT PREP PAGE ═══════════════════ -->
+<div class="page" id="page-dca">
+  <div class="dca-wrap">
+    <div class="dca-hero">
+      <div class="dca-badge">🏅</div>
+      <div class="dca-hero-info">
+        <h2>Docker Certified Associate (DCA)</h2>
+        <p>The DCA exam validates your skills as a Docker practitioner. This guide covers all 6 domains, exam weighting, key topics, study tips, and curated resources to pass on your first attempt.</p>
+        <div class="dca-meta">
+          <span class="dca-tag">55 questions</span>
+          <span class="dca-tag">90 minutes</span>
+          <span class="dca-tag">Score ≥ 65% to pass</span>
+          <span class="dca-tag">Multiple choice + multi-select</span>
+          <span class="dca-tag">Online proctored</span>
+        </div>
+      </div>
+    </div>
+
+    <p class="sec-tag" style="margin-bottom:1rem">// Exam Domains — click to expand</p>
+    <div class="dca-grid" id="dca-domains"></div>
+
+    <div class="dca-tips">
+      <h3>🎯 Study Tips & Strategy</h3>
+      <div class="tip-grid">
+        <div class="tip-card">
+          <div class="tip-card-title">Focus on Swarm & Orchestration</div>
+          <div class="tip-card-body">Orchestration is 25% of the exam. Know Swarm mode deeply: services, stacks, replicas, rolling updates, drain/active node states.</div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-card-title">Hands-on with Docker Play</div>
+          <div class="tip-card-body">Use play-with-docker.com for free lab time. Practice the exact commands you read about — muscle memory matters for timed exams.</div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-card-title">Know the CLI flags cold</div>
+          <div class="tip-card-body">Many questions test specific flags. Know: docker service create, docker network create, docker volume create, docker stack deploy options.</div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-card-title">Read the official docs</div>
+          <div class="tip-card-body">The exam is based on Docker documentation. Focus on docs.docker.com sections matching each domain. The exact wording matters.</div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-card-title">Use this quiz bank</div>
+          <div class="tip-card-body">Filter by Security, Networking, and Compose in the DockerLab quiz — those categories map directly to DCA exam domains.</div>
+        </div>
+        <div class="tip-card">
+          <div class="tip-card-title">Schedule when ~80% ready</div>
+          <div class="tip-card-body">Don't wait until you feel 100% ready — it rarely comes. Practice exams at 70%+ accuracy are a reliable signal you are exam-ready.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="dca-resources">
+      <h3>📚 Study Resources</h3>
+      <div class="resource-list">
+        <div class="resource-item" onclick="window.open('https://training.mirantis.com/certification/dca-certification-exam/','_blank')">
+          <span class="resource-icon">🏅</span>
+          <div><div class="resource-name">Official DCA Exam Page</div><div class="resource-desc">Mirantis — register for the exam, official study guide, exam blueprint</div></div>
+        </div>
+        <div class="resource-item" onclick="window.open('https://docs.docker.com','_blank')">
+          <span class="resource-icon">📖</span>
+          <div><div class="resource-name">Docker Official Documentation</div><div class="resource-desc">The source of truth. Every exam question is based on these docs</div></div>
+        </div>
+        <div class="resource-item" onclick="window.open('https://labs.play-with-docker.com','_blank')">
+          <span class="resource-icon">🧪</span>
+          <div><div class="resource-name">Play With Docker</div><div class="resource-desc">Free browser-based Docker environment — practice Swarm, multi-node setups</div></div>
+        </div>
+        <div class="resource-item" onclick="showPage('quiz')">
+          <span class="resource-icon">🧠</span>
+          <div><div class="resource-name">DockerLab Quiz (this site)</div><div class="resource-desc">100 questions covering all DCA domains — filter by Security, Networking, Compose</div></div>
+        </div>
+        <div class="resource-item" onclick="showPage('cheatsheet')">
+          <span class="resource-icon">⌘</span>
+          <div><div class="resource-name">DockerLab Cheatsheet</div><div class="resource-desc">150+ commands — know the exact syntax before exam day</div></div>
+        </div>
+        <div class="resource-item" onclick="window.open('https://github.com/Evalle/DCA','_blank')">
+          <span class="resource-icon">🐙</span>
+          <div><div class="resource-name">DCA Study Guide (GitHub)</div><div class="resource-desc">Community-maintained DCA prep notes, questions, and links by Evalle</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 // ══════════════════════════════════════════════
 //  THEME TOGGLE
@@ -690,13 +909,18 @@ function toggleTheme() {
 function showPage(name) {
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
   document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.bnav-item').forEach(t => t.classList.remove('active'));
   document.getElementById('page-' + name).classList.add('active');
   const tab = document.getElementById('tab-' + name);
   if (tab) tab.classList.add('active');
+  const bnav = document.getElementById('bnav-' + name);
+  if (bnav) bnav.classList.add('active');
   window.scrollTo(0, 0);
   if (name === 'cheatsheet') renderCheatsheet();
   if (name === 'learn') renderModules();
   if (name === 'bestpractices') renderBestPractices();
+  if (name === 'library') renderLibrary();
+  if (name === 'dca') renderDCA();
 }
 
 function showTool(name) {
@@ -1518,6 +1742,417 @@ function renderBPCards() {
 function toggleBP(i) {
   const body = document.getElementById('bpbody-' + i);
   const arrow = document.getElementById('bparrow-' + i);
+  const open = body.classList.toggle('open');
+  arrow.style.transform = open ? 'rotate(90deg)' : '';
+  arrow.style.transition = '.3s';
+}
+
+// ══════════════════════════════════════════════
+//  DOCKERFILE LIBRARY DATA
+// ══════════════════════════════════════════════
+const LIBRARY = [
+  { lang:'Node.js', category:'Backend', color:'#68a063', bg:'rgba(104,160,99,.15)',
+    title:'Node.js Express API', size:'~120MB → ~45MB', tags:['multi-stage','alpine','non-root','healthcheck'],
+    notes:'<strong>Key decisions:</strong> Alpine base cuts 700MB+. package*.json copied before source for cache efficiency. Non-root <code>node</code> user. dumb-init handles signals correctly.',
+    code:`# ── Stage 1: Dependencies ──────────────────
+FROM node:20-alpine AS deps
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+
+# ── Stage 2: Build ──────────────────────────
+FROM node:20-alpine AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+# ── Stage 3: Production ─────────────────────
+FROM node:20-alpine AS runner
+RUN apk add --no-cache dumb-init
+WORKDIR /app
+ENV NODE_ENV=production
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=build /app/dist ./dist
+COPY package.json ./
+USER node
+EXPOSE 3000
+HEALTHCHECK --interval=30s --timeout=5s --start-period=10s \\
+  CMD wget -qO- http://localhost:3000/health || exit 1
+ENTRYPOINT ["dumb-init","--"]
+CMD ["node","dist/server.js"]`},
+
+  { lang:'Python', category:'Backend', color:'#3572a5', bg:'rgba(53,114,165,.15)',
+    title:'FastAPI / Django App', size:'~900MB → ~160MB', tags:['multi-stage','slim','non-root','virtualenv'],
+    notes:'<strong>Key decisions:</strong> Virtual environment in /venv avoids system package conflicts. PYTHONDONTWRITEBYTECODE and PYTHONUNBUFFERED are essential for containers. Copies only the venv to final stage.',
+    code:`# ── Stage 1: Builder ────────────────────────
+FROM python:3.12-slim AS builder
+WORKDIR /app
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1
+RUN python -m venv /venv
+ENV PATH="/venv/bin:$PATH"
+COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip \\
+    && pip install --no-cache-dir -r requirements.txt
+
+# ── Stage 2: Production ─────────────────────
+FROM python:3.12-slim AS runner
+WORKDIR /app
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 \\
+    PATH="/venv/bin:$PATH"
+COPY --from=builder /venv /venv
+COPY . .
+RUN useradd --no-create-home --shell /bin/false appuser
+USER appuser
+EXPOSE 8000
+HEALTHCHECK --interval=30s --timeout=5s \\
+  CMD python -c "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"
+CMD ["uvicorn","app.main:app","--host","0.0.0.0","--port","8000"]`},
+
+  { lang:'Go', category:'Backend', color:'#00add8', bg:'rgba(0,173,216,.15)',
+    title:'Go REST API', size:'~800MB → ~12MB', tags:['scratch','static binary','CGO_ENABLED=0','distroless'],
+    notes:'<strong>Key decisions:</strong> Go compiles to a single static binary. FROM scratch produces a ~12MB image with zero attack surface — no shell, no OS utilities. CGO_ENABLED=0 ensures no libc dependency.',
+    code:`# ── Stage 1: Build ──────────────────────────
+FROM golang:1.22-alpine AS builder
+WORKDIR /app
+ENV CGO_ENABLED=0 GOOS=linux GOARCH=amd64
+COPY go.mod go.sum ./
+RUN go mod download
+COPY . .
+RUN go build \\
+    -ldflags="-w -s" \\
+    -o /app/server \\
+    ./cmd/server
+
+# ── Stage 2: Production (scratch) ───────────
+FROM scratch AS runner
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=builder /app/server /server
+EXPOSE 8080
+HEALTHCHECK --interval=30s --timeout=3s \\
+  CMD ["/server","-health"]
+ENTRYPOINT ["/server"]`},
+
+  { lang:'Next.js', category:'Frontend', color:'#000000', bg:'rgba(150,150,150,.12)',
+    title:'Next.js App (standalone)', size:'~1.2GB → ~180MB', tags:['standalone output','multi-stage','sharp'],
+    notes:'<strong>Key decisions:</strong> Next.js standalone output copies only needed files. Set <code>output: "standalone"</code> in next.config.js first. Sharp for image optimization must be copied from builder.',
+    code:`# ── Stage 1: Dependencies ──────────────────
+FROM node:20-alpine AS deps
+RUN apk add --no-cache libc6-compat
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+
+# ── Stage 2: Build ──────────────────────────
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY --from=deps /app/node_modules ./node_modules
+COPY . .
+ENV NEXT_TELEMETRY_DISABLED=1
+RUN npm run build
+
+# ── Stage 3: Production ─────────────────────
+FROM node:20-alpine AS runner
+WORKDIR /app
+ENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1
+RUN addgroup --system nodejs && adduser --system nextjs
+COPY --from=builder /app/public ./public
+COPY --from=builder --chown=nextjs:nodejs \\
+  /app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs \\
+  /app/.next/static ./.next/static
+USER nextjs
+EXPOSE 3000
+ENV PORT=3000 HOSTNAME="0.0.0.0"
+CMD ["node","server.js"]`},
+
+  { lang:'Java', category:'Backend', color:'#b07219', bg:'rgba(176,114,25,.15)',
+    title:'Spring Boot (JRE 21)', size:'~800MB → ~220MB', tags:['layered jar','jre21','multi-stage','non-root'],
+    notes:'<strong>Key decisions:</strong> Spring Boot layered jars split deps/app for better caching. JRE (not JDK) in production stage cuts 200MB+. Application layer changes most often — placed last.',
+    code:`# ── Stage 1: Extract layers ─────────────────
+FROM eclipse-temurin:21-jdk-alpine AS builder
+WORKDIR /app
+COPY target/*.jar app.jar
+RUN java -Djarmode=layertools -jar app.jar extract
+
+# ── Stage 2: Production ─────────────────────
+FROM eclipse-temurin:21-jre-alpine AS runner
+WORKDIR /app
+RUN addgroup -S spring && adduser -S spring -G spring
+# Copy layers in order of change frequency (least → most)
+COPY --from=builder /app/dependencies/ ./
+COPY --from=builder /app/spring-boot-loader/ ./
+COPY --from=builder /app/snapshot-dependencies/ ./
+COPY --from=builder /app/application/ ./
+USER spring
+EXPOSE 8080
+HEALTHCHECK --interval=30s --timeout=5s \\
+  CMD wget -qO- http://localhost:8080/actuator/health || exit 1
+ENTRYPOINT ["java","org.springframework.boot.loader.JarLauncher"]`},
+
+  { lang:'Rust', category:'Backend', color:'#dea584', bg:'rgba(222,165,132,.15)',
+    title:'Rust Axum API', size:'~3GB → ~15MB', tags:['distroless','static','musl','scratch'],
+    notes:'<strong>Key decisions:</strong> Rust target x86_64-unknown-linux-musl produces a fully static binary. cargo-chef caches dependencies layer separately — huge build time savings on code changes.',
+    code:`# ── Stage 1: Planner ────────────────────────
+FROM rust:1.78-alpine AS planner
+RUN apk add --no-cache musl-dev
+WORKDIR /app
+RUN cargo install cargo-chef
+COPY . .
+RUN cargo chef prepare --recipe-path recipe.json
+
+# ── Stage 2: Cache deps ─────────────────────
+FROM rust:1.78-alpine AS cacher
+RUN apk add --no-cache musl-dev
+RUN cargo install cargo-chef
+WORKDIR /app
+COPY --from=planner /app/recipe.json recipe.json
+RUN cargo chef cook --release --recipe-path recipe.json
+
+# ── Stage 3: Build ──────────────────────────
+FROM rust:1.78-alpine AS builder
+RUN apk add --no-cache musl-dev
+WORKDIR /app
+COPY . .
+COPY --from=cacher /app/target target
+COPY --from=cacher /usr/local/cargo /usr/local/cargo
+RUN cargo build --release
+
+# ── Stage 4: Production (distroless) ────────
+FROM gcr.io/distroless/static-debian12 AS runner
+COPY --from=builder /app/target/release/server /server
+EXPOSE 8080
+CMD ["/server"]`},
+
+  { lang:'PHP', category:'Backend', color:'#4f5d95', bg:'rgba(79,93,149,.15)',
+    title:'Laravel (PHP-FPM + Nginx)', size:'~500MB', tags:['php-fpm','nginx','composer','opcache'],
+    notes:'<strong>Key decisions:</strong> PHP-FPM with a separate Nginx container is the production pattern. Composer installs without dev dependencies. OPcache enabled for performance.',
+    code:`# ── Stage 1: Composer deps ──────────────────
+FROM composer:2 AS vendor
+WORKDIR /app
+COPY composer.json composer.lock ./
+RUN composer install \\
+    --no-dev \\
+    --no-interaction \\
+    --prefer-dist \\
+    --optimize-autoloader \\
+    --no-scripts
+
+# ── Stage 2: PHP-FPM app ────────────────────
+FROM php:8.3-fpm-alpine AS runner
+RUN apk add --no-cache \\
+    libpng-dev libzip-dev \\
+    && docker-php-ext-install \\
+       pdo_mysql zip gd opcache
+COPY docker/php/opcache.ini /usr/local/etc/php/conf.d/
+COPY docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf
+WORKDIR /var/www/html
+COPY --from=vendor /app/vendor ./vendor
+COPY . .
+RUN chown -R www-data:www-data storage bootstrap/cache
+USER www-data
+EXPOSE 9000
+HEALTHCHECK --interval=30s --timeout=5s \\
+  CMD php-fpm -t || exit 1`},
+
+  { lang:'React', category:'Frontend', color:'#61dafb', bg:'rgba(97,218,251,.12)',
+    title:'React (Vite + Nginx)', size:'~1GB → ~25MB', tags:['nginx','static','multi-stage','vite'],
+    notes:'<strong>Key decisions:</strong> Node only needed at build time — final image is just Nginx serving static files. Custom nginx.conf enables gzip, SPA routing (try_files), and security headers.',
+    code:`# ── Stage 1: Build ──────────────────────────
+FROM node:20-alpine AS builder
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+# ── Stage 2: Serve with Nginx ───────────────
+FROM nginx:1.25-alpine AS runner
+COPY --from=builder /app/dist /usr/share/nginx/html
+COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
+# nginx.conf should include:
+#   try_files $uri $uri/ /index.html; (SPA routing)
+#   gzip on;
+#   security headers (X-Frame-Options, etc.)
+EXPOSE 80
+HEALTHCHECK --interval=30s --timeout=3s \\
+  CMD wget -qO- http://localhost/health || exit 1
+CMD ["nginx","-g","daemon off;"]`},
+];
+
+const LIB_CATS = ['All','Backend','Frontend'];
+let libRendered = false, activeLibFilter = 'All';
+
+function renderLibrary() {
+  if (!libRendered) {
+    libRendered = true;
+    document.getElementById('lib-filters').innerHTML = LIB_CATS.map(c =>
+      `<button class="lib-filter${c==='All'?' active':''}" onclick="filterLib('${c}')">${c}</button>`
+    ).join('');
+  }
+  renderLibCards();
+}
+
+function filterLib(cat) {
+  activeLibFilter = cat;
+  document.querySelectorAll('.lib-filter').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  renderLibCards();
+}
+
+function renderLibCards() {
+  const filtered = activeLibFilter === 'All' ? LIBRARY : LIBRARY.filter(l => l.category === activeLibFilter);
+  document.getElementById('lib-grid').innerHTML = filtered.map((item, i) => {
+    const highlighted = item.code
+      .replace(/(FROM|RUN|COPY|WORKDIR|ENV|USER|EXPOSE|ENTRYPOINT|CMD|HEALTHCHECK|ARG|LABEL|SHELL|ADD|AS)/g, '<span class="df-kw">$1</span>')
+      .replace(/(#[^\n]*)/g, '<span class="df-cmt">$1</span>')
+      .replace(/"([^"]+)"/g, '<span class="df-str">"$1"</span>');
+    return `<div class="lib-card">
+      <div class="lib-card-top">
+        <span class="lib-lang-badge" style="background:${item.bg};color:${item.color}">${item.lang}</span>
+        <div style="flex:1">
+          <div class="lib-card-title">${item.title}</div>
+          <div class="lib-card-meta">Final size: ${item.size}</div>
+          <div class="lib-tags">${item.tags.map(t=>`<span class="lib-tag">${t}</span>`).join('')}</div>
+        </div>
+      </div>
+      <div class="lib-code-wrap">
+        <pre class="lib-code" id="libcode-${i}">${highlighted}</pre>
+        <button class="lib-copy-btn" onclick="copyLibCode(${i})">⎘ Copy</button>
+      </div>
+      <div class="lib-notes">${item.notes}</div>
+    </div>`;
+  }).join('');
+}
+
+function copyLibCode(i) {
+  const el = document.getElementById('libcode-' + i);
+  const text = el.innerText || el.textContent;
+  navigator.clipboard.writeText(text).catch(()=>{});
+  const btn = el.parentElement.querySelector('.lib-copy-btn');
+  btn.textContent = '✓ Copied!';
+  setTimeout(() => btn.textContent = '⎘ Copy', 1800);
+}
+
+// ══════════════════════════════════════════════
+//  DCA CERT PREP DATA
+// ══════════════════════════════════════════════
+const DCA_DOMAINS = [
+  { num:'01', title:'Orchestration', pct:25, color:'#1D63ED', bg:'rgba(29,99,237,.15)',
+    topics:[
+      'Complete the setup of a swarm mode cluster with managers and workers',
+      'State the differences between running a container vs a service',
+      'Demonstrate steps to lock a swarm cluster and interpret a locked swarm scenario',
+      'Extend the instructions to run individual containers as replicated services',
+      'Interpret the output of docker inspect on a running service',
+      'Convert an application deployment into a stack file using a YAML compose file',
+      'Manipulate a running stack of services including scaling, updating, rolling back',
+      'Increase number of replicas and add networks/ports to a service',
+      'Mount volumes in Docker services and tasks',
+      'Illustrate running a replicated vs global service',
+      'Identify troubleshooting steps for services running in swarm',
+      'Describe how to use templates with docker service create',
+    ]},
+  { num:'02', title:'Image Creation, Management & Registry', pct:20, color:'#11cdef', bg:'rgba(17,205,239,.12)',
+    topics:[
+      'Describe Dockerfile options ADD, COPY, ENV, EXPOSE, FROM, HEALTHCHECK, LABEL, ONBUILD, RUN, SHELL, STOPSIGNAL, USER, VOLUME, WORKDIR',
+      'Describe and demonstrate how to create an efficient image via a Dockerfile',
+      'Describe and demonstrate how to use CLI commands to manage images (list, delete, prune, rmi)',
+      'Inspect images and report specific attributes using filter and format',
+      'Demonstrate pulling and deleting images from a registry',
+      'Describe how image layers work',
+      'Modify an image to a single layer and deploy it',
+      'Describe how to configure a local registry',
+      'Describe and demonstrate how to log into and out of a registry',
+      'Describe and demonstrate how to tag an image',
+      'Describe and demonstrate how to push an image to a registry',
+      'Describe how image deletion works and when it frees disk space',
+      'Demonstrate how to show the main parts of an image spec',
+    ]},
+  { num:'03', title:'Installation & Configuration', pct:15, color:'#2dce89', bg:'rgba(45,206,137,.12)',
+    topics:[
+      'Describe sizing requirements prior to installation',
+      'Set up repo, select a storage driver, and complete installation on multiple platforms',
+      'Configure logging drivers (splunk, journald, etc.)',
+      'Describe and demonstrate how to configure Docker runtime options',
+      'Setup swarm, configure managers, add nodes, and setup the backup schedule',
+      'Create and manage user and teams in DTR',
+      'Interpret errors to troubleshoot installation issues without assistance',
+      'Describe the process of upgrading Docker engine',
+      'Describe and demonstrate the steps to deploy the Docker engine, UCP, and DTR on AWS and on-premises',
+      'Describe and demonstrate how to configure backups for UCP and DTR',
+    ]},
+  { num:'04', title:'Networking', pct:15, color:'#f7941d', bg:'rgba(247,148,29,.12)',
+    topics:[
+      'Create a Docker bridge network for a developer to use for their containers',
+      'Troubleshoot container and engine logs to understand network connectivity issues',
+      'Publish a port so that an application is accessible externally',
+      'Identify which IP and port a container is externally accessible on',
+      'Describe the different types and use cases for the built-in network drivers',
+      'Understand the Container Network Model and how it interfaces with the Docker engine',
+      'Configure Docker to use external DNS',
+      'Use Docker to load balance HTTP/HTTPs traffic to an application',
+      'Understand and describe the types of traffic that flow between the Docker engine, the UCP, and DTR',
+      'Deploy a service on a Docker overlay network',
+      'Describe the difference between host and ingress port publishing mode',
+    ]},
+  { num:'05', title:'Security', pct:15, color:'#f5365c', bg:'rgba(245,54,92,.12)',
+    topics:[
+      'Describe the process of signing an image and enable Docker Content Trust',
+      'Demonstrate that an image passes a security scan',
+      'Enable Docker Content Trust',
+      'Configure RBAC in UCP',
+      'Integrate UCP with LDAP/AD',
+      'Demonstrate creation of UCP client bundles',
+      'Describe default engine security: namespaces, cgroups, and seccomp profiles',
+      'Describe swarm default security: PKI, certificate rotation, mutual TLS, locked swarms',
+      'Describe MTLS: which certs are used, which are mandatory and optional',
+      'Identity roles in the UCP GUI',
+      'Describe the difference between UCP workers and managers',
+    ]},
+  { num:'06', title:'Storage & Volumes', pct:10, color:'#534AB7', bg:'rgba(83,74,183,.12)',
+    topics:[
+      'State which graph driver should be used on which OS',
+      'Demonstrate how to configure devicemapper',
+      'Compare object storage to block storage and explain which one is preferable when available',
+      'Summarize how an application is composed of layers and where those layers reside on the filesystem',
+      'Describe how volumes are used with Docker for persistent storage',
+      'Identify the steps you would take to clean up unused images, containers, and volumes',
+      'Demonstrate how storage can be used across cluster nodes',
+      'Identify the correct graph drivers to uses with various operating systems',
+    ]},
+];
+
+let dcaRendered = false;
+function renderDCA() {
+  if (dcaRendered) return;
+  dcaRendered = true;
+  document.getElementById('dca-domains').innerHTML = DCA_DOMAINS.map((d, i) => `
+    <div class="dca-domain">
+      <div class="dca-domain-top" onclick="toggleDCA(${i})">
+        <div class="dca-domain-num" style="background:${d.bg};color:${d.color}">${d.num}</div>
+        <div class="dca-domain-info">
+          <div class="dca-domain-title">${d.title}</div>
+          <div class="dca-domain-pct">${d.pct}% of exam · ${d.topics.length} objectives</div>
+        </div>
+        <div class="mod-arrow" id="dcaarrow-${i}">▸</div>
+      </div>
+      <div class="dca-pct-bar"><div class="dca-pct-fill" style="width:${d.pct*4}%;background:${d.color}"></div></div>
+      <div class="dca-domain-body" id="dcabody-${i}">
+        <ul class="dca-topic-list">
+          ${d.topics.map(t => `<li>${t}</li>`).join('')}
+        </ul>
+        <div style="margin-top:10px">
+          <button class="btn btn-sm btn-ghost" onclick="showPage('quiz')">Practice quiz →</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function toggleDCA(i) {
+  const body = document.getElementById('dcabody-' + i);
+  const arrow = document.getElementById('dcaarrow-' + i);
   const open = body.classList.toggle('open');
   arrow.style.transform = open ? 'rotate(90deg)' : '';
   arrow.style.transition = '.3s';
