@@ -1,21 +1,4 @@
-# 🐳 DockerLab — Container Engineering by EknathaLabs
 
-> **Master Docker from first run to production-grade containers.**
-> AI-powered tools, 100-question quiz, 150+ command cheatsheet, real-world Dockerfile library, DCA cert prep, and 10 structured learning modules. Free forever.
-
-[![Live Site](https://img.shields.io/badge/Live-docker.eknathalabs.com-1D63ED?style=for-the-badge&logo=docker&logoColor=white)](https://docker.eknathalabs.com)
-[![EknathaLabs](https://img.shields.io/badge/EknathaLabs-Platform%20Engineering-F7941D?style=for-the-badge)](https://eknathalabs.com)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-![Free](https://img.shields.io/badge/Free-Forever-2dce89?style=for-the-badge)
-
----
-
-## ✨ Features
-
-### ⚙️ 8 AI-Powered Tools
-All tools use the Claude AI API and run entirely in the browser — no backend required.
-
-| Tool | What it does |
 |---|---|
 | 🔍 **Dockerfile Linter** | Scores your Dockerfile, lists errors/warnings with severity, outputs a fixed version |
 | 📖 **Dockerfile Explainer** | Line-by-line breakdown of any Dockerfile instruction |
