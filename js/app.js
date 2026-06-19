@@ -204,26 +204,73 @@ function renderModules() {
   if (modulesRendered) return;
   modulesRendered = true;
   const list = document.getElementById('modules-list');
-  list.innerHTML = MODULES.map((m,i) =>
-    `<div class="module-card">
+  list.innerHTML = MODULES.map((m, i) => {
+    const lessons = m.lessons || (m.topics || []).map(t => ({ t }));
+    const lessonHtml = lessons.map((l, j) => renderLesson(m, i, l, j)).join('');
+    return `<div class="module-card">
       <div class="module-header" onclick="toggleModule(${i})">
         <div class="mod-num" style="color:${m.color};border-color:${m.color}40;background:${m.color}18">${m.num}</div>
         <div style="flex:1">
           <div class="mod-title">${m.title}</div>
-          <div class="mod-meta">${m.topics.length} topics · ${m.duration}</div>
+          <div class="mod-meta">${lessons.length} topics · ${m.duration}</div>
         </div>
         <div class="mod-arrow" id="arrow-${i}">▸</div>
       </div>
       <div class="module-body" id="body-${i}">
-        <ul class="topic-list">
-          ${m.topics.map(t => `<li>${t}</li>`).join('')}
-        </ul>
-        <div class="mod-tags">${m.tags.map(t => `<span class="mod-tag">${t}</span>`).join('')}</div>
-        <div style="margin-top:14px">
-          <button class="btn btn-sm btn-ghost" onclick="showTool('linter')">Practice with AI Tools →</button>
-        </div>
+        <div class="lesson-list">${lessonHtml}</div>
+        <div class="mod-tags">${(m.tags || []).map(t => `<span class="mod-tag">${t}</span>`).join('')}</div>
       </div>
+    </div>`;
+  }).join('');
+}
+
+function renderLesson(m, i, l, j) {
+  // A topic with no authored body falls back to a simple bullet.
+  const hasBody = l.theory || (l.examples && l.examples.length) || (l.tips && l.tips.length) || (l.gotchas && l.gotchas.length);
+  if (!hasBody) {
+    return `<div class="lesson lesson-stub"><span class="lesson-dot" style="background:${m.color}"></span>${esc(l.t)}</div>`;
+  }
+  const id = `lsn-${i}-${j}`;
+  const examples = (l.examples || []).map(ex => `
+    <div class="lesson-example">
+      ${ex.label ? `<div class="ex-label">${esc(ex.label)}</div>` : ''}
+      <pre class="ex-code"><code>${esc(ex.code)}</code></pre>
     </div>`).join('');
+  const tips = (l.tips || []).length ? `
+    <div class="lesson-block tip-block">
+      <div class="lb-head">💡 Pro tips</div>
+      <ul>${l.tips.map(t => `<li>${esc(t)}</li>`).join('')}</ul>
+    </div>` : '';
+  const gotchas = (l.gotchas || []).length ? `
+    <div class="lesson-block gotcha-block">
+      <div class="lb-head">⚠️ Common mistakes</div>
+      <ul>${l.gotchas.map(g => `<li>${esc(g)}</li>`).join('')}</ul>
+    </div>` : '';
+  return `<div class="lesson">
+    <div class="lesson-head" onclick="toggleLesson('${id}')">
+      <span class="lesson-dot" style="background:${m.color}"></span>
+      <span class="lesson-title">${esc(l.t)}</span>
+      <span class="lesson-arrow" id="${id}-arr">▸</span>
+    </div>
+    <div class="lesson-body" id="${id}">
+      ${l.theory ? `<p class="lesson-theory">${esc(l.theory)}</p>` : ''}
+      ${examples}
+      ${tips}
+      ${gotchas}
+    </div>
+  </div>`;
+}
+
+// Small HTML-escape helper (lessons contain user-facing prose/code).
+function esc(s) {
+  return String(s == null ? '' : s).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+}
+
+function toggleLesson(id) {
+  const body = document.getElementById(id);
+  const arr = document.getElementById(id + '-arr');
+  const open = body.classList.toggle('open');
+  if (arr) { arr.style.transform = open ? 'rotate(90deg)' : ''; arr.style.transition = '.25s'; }
 }
 
 function toggleModule(i) {

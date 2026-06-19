@@ -1,6 +1,6 @@
 // DockerLab service worker — precache the whole app for true offline use.
 // After the first visit the site works with no network at all.
-const CACHE = 'dockerlab-v1';
+const CACHE = 'dockerlab-v2';
 const ASSETS = [
   './',
   './index.html',
