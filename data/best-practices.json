@@ -1,0 +1,216 @@
+[
+  {
+    "cat": "Image & Dockerfile",
+    "icon": "🏗️",
+    "color": "rgba(29,99,237,.15)",
+    "rules": [
+      {
+        "sev": "critical",
+        "text": "<strong>Never use :latest tag</strong> in production. Pin to a specific version like <code>node:20.11.0-alpine</code> or a digest <code>node@sha256:abc</code> for reproducible, auditable builds."
+      },
+      {
+        "sev": "critical",
+        "text": "<strong>Always add a .dockerignore file.</strong> Exclude <code>.git</code>, <code>.env</code>, <code>node_modules</code>, <code>*.log</code> to prevent secrets leaking into the image and reduce build context size."
+      },
+      {
+        "sev": "important",
+        "text": "<strong>Use multi-stage builds</strong> to separate build and runtime stages. Final image should contain only the compiled artifact and runtime dependencies — not build tools, compilers, or test frameworks."
+      },
+      {
+        "sev": "important",
+        "text": "<strong>Optimize layer caching:</strong> Copy dependency manifests first (<code>package.json</code>, <code>requirements.txt</code>), install dependencies, then copy source code. Code changes do not bust the dependency cache."
+      },
+      {
+        "sev": "important",
+        "text": "<strong>Use slim or alpine base images.</strong> <code>node:20-alpine</code> (~7MB) vs <code>node:20</code> (~900MB). Smaller images mean faster pulls, less attack surface, and lower registry storage costs."
+      },
+      {
+        "sev": "recommended",
+        "text": "<strong>Chain RUN commands</strong> with <code>&&</code> and clean up in the same layer: <code>RUN apt-get update && apt-get install -y pkg && rm -rf /var/lib/apt/lists/*</code> to prevent caching stale package lists."
+      },
+      {
+        "sev": "recommended",
+        "text": "<strong>Use COPY over ADD</strong> unless you specifically need ADD features (remote URL fetch or tar extraction). COPY is explicit and predictable."
+      },
+      {
+        "sev": "recommended",
+        "text": "<strong>Add HEALTHCHECK</strong> to every production image. Orchestrators use this to detect unhealthy containers and stop routing traffic to them."
+      }
+    ]
+  },
+  {
+    "cat": "Security",
+    "icon": "🔒",
+    "color": "rgba(245,54,92,.12)",
+    "rules": [
+      {
+        "sev": "critical",
+        "text": "<strong>Never run containers as root.</strong> Add <code>USER node</code> (or a non-root UID like <code>USER 1000:1000</code>) before CMD/ENTRYPOINT in every production Dockerfile."
+      },
+      {
+        "sev": "critical",
+        "text": "<strong>Never store secrets in ENV instructions.</strong> ENV values are baked into the image and visible via <code>docker inspect</code> and <code>docker history</code>. Use Docker secrets, Vault, or runtime injection instead."
+      },
+      {
+        "sev": "critical",
+        "text": "<strong>Scan images for CVEs</strong> before every deployment using Trivy, Docker Scout, or Snyk. Integrate scanning into your CI pipeline and fail the build on critical vulnerabilities."
+      },
+      {
+        "sev": "critical",
+        "text": "<strong>Never expose the Docker socket</strong> (<code>/var/run/docker.sock</code>) to containers unless absolutely necessary. It gives full Docker daemon control — effectively root access to the host."
+      },
+      {
+        "sev": "important",
+        "text": "<strong>Drop all Linux capabilities</strong> and add back only what the app needs: <code>--cap-drop ALL --cap-add NET_BIND_SERVICE</code>. Default Docker capabilities include many that are rarely needed."
+      },
+      {
+        "sev": "important",
+        "text": "<strong>Use read-only filesystems:</strong> <code>docker run --read-only</code> prevents runtime modification. Add <code>--tmpfs /tmp</code> for write access to temp directories only."
+      },
+      {
+        "sev": "important",
+        "text": "<strong>Pin base image digests</strong> in critical production workloads: <code>FROM node:20-alpine@sha256:abc123</code>. Tags are mutable; digests are immutable content addresses."
+      },
+      {
+        "sev": "recommended",
+        "text": "<strong>Enable Docker Content Trust</strong> (<code>DOCKER_CONTENT_TRUST=1</code>) to only pull and run signed images. Protects against supply chain attacks."
+      },
+      {
+        "sev": "recommended",
+        "text": "<strong>Use --no-new-privileges:</strong> <code>--security-opt no-new-privileges:true</code> prevents processes inside the container from gaining additional privileges via setuid/setgid binaries."
+      }
+    ]
+  },
+  {
+    "cat": "Networking",
+    "icon": "🌐",
+    "color": "rgba(17,205,239,.1)",
+    "rules": [
+      {
+        "sev": "critical",
+        "text": "<strong>Never use --privileged</strong> unless absolutely required. It disables all security profiles and gives the container near-unrestricted host access. Use specific <code>--cap-add</code> and <code>--device</code> instead."
+      },
+      {
+        "sev": "important",
+        "text": "<strong>Use user-defined bridge networks</strong> instead of the default bridge. User-defined networks provide automatic DNS resolution by container/service name — the default bridge uses IP only."
+      },
+      {
+        "sev": "important",
+        "text": "<strong>Avoid --network host</strong> in production. It removes all network isolation. Prefer explicit port publishing (<code>-p HOST:CONTAINER</code>) for controlled exposure."
+      },
+      {
+        "sev": "important",
+        "text": "<strong>Only publish ports that need to be public.</strong> Use <code>expose:</code> in Compose for internal service-to-service communication; <code>ports:</code> only for services that need host access."
+      },
+      {
+        "sev": "recommended",
+        "text": "<strong>Isolate services with separate networks.</strong> Frontend should not be on the same network as your database. Use multiple networks to enforce least-privilege network access."
+      },
+      {
+        "sev": "recommended",
+        "text": "<strong>Use EXPOSE for documentation.</strong> Even though it does not publish ports, EXPOSE communicates intended ports to operators and tooling. Always include it in Dockerfiles."
+      }
+    ]
+  },
+  {
+    "cat": "Storage & Volumes",
+    "icon": "💾",
+    "color": "rgba(247,148,29,.1)",
+    "rules": [
+      {
+        "sev": "critical",
+        "text": "<strong>Never store sensitive data in container layers.</strong> Container layers are part of the image and accessible to anyone who pulls it. Use volumes or external secrets management."
+      },
+      {
+        "sev": "important",
+        "text": "<strong>Use named volumes for persistent data,</strong> not anonymous volumes. Named volumes are easy to inspect, back up, and reference across containers."
+      },
+      {
+        "sev": "important",
+        "text": "<strong>Back up volumes regularly.</strong> Use the pattern: <code>docker run --rm -v myvol:/data -v $(pwd):/backup alpine tar czf /backup/backup.tar.gz /data</code>."
+      },
+      {
+        "sev": "important",
+        "text": "<strong>Use tmpfs for sensitive in-memory data</strong> (tokens, session data) that should never hit disk: <code>docker run --tmpfs /run/secrets:rw,noexec,nosuid,size=65536k</code>."
+      },
+      {
+        "sev": "recommended",
+        "text": "<strong>Use --mount instead of -v</strong> for explicit, readable volume definitions. It fails fast on missing directories and makes options obvious."
+      },
+      {
+        "sev": "recommended",
+        "text": "<strong>Set appropriate file permissions</strong> on volume-mounted files. Containers running as non-root users need ownership set correctly, often via an entrypoint script with chown."
+      }
+    ]
+  },
+  {
+    "cat": "Docker Compose",
+    "icon": "🎼",
+    "color": "rgba(83,74,183,.12)",
+    "rules": [
+      {
+        "sev": "critical",
+        "text": "<strong>Never commit .env files to source control.</strong> Use .env.example with placeholder values. Add .env to .gitignore. Load secrets from a secrets manager at deploy time."
+      },
+      {
+        "sev": "important",
+        "text": "<strong>Use healthchecks with depends_on.</strong> <code>depends_on</code> alone only controls start order, not readiness. Add <code>condition: service_healthy</code> with a proper <code>healthcheck:</code> definition."
+      },
+      {
+        "sev": "important",
+        "text": "<strong>Set resource limits</strong> on every service: <code>deploy: resources: limits: cpus: \"0.5\" memory: 512M</code>. Prevents one misbehaving container from starving others."
+      },
+      {
+        "sev": "important",
+        "text": "<strong>Use override files for environment differences.</strong> Keep <code>docker-compose.yaml</code> as the base, <code>docker-compose.override.yaml</code> for local dev, <code>docker-compose.prod.yaml</code> for production."
+      },
+      {
+        "sev": "recommended",
+        "text": "<strong>Use profiles</strong> to group optional services (monitoring, debug tools) that should not run in production by default: <code>profiles: [debug]</code>."
+      },
+      {
+        "sev": "recommended",
+        "text": "<strong>Specify explicit network names</strong> in compose. Default network names include the project directory prefix, which changes between environments and can cause confusion."
+      },
+      {
+        "sev": "recommended",
+        "text": "<strong>Use restart: unless-stopped</strong> for production services instead of <code>restart: always</code>. It respects intentional manual stops and avoids restart loops during maintenance."
+      }
+    ]
+  },
+  {
+    "cat": "Performance & CI/CD",
+    "icon": "🚀",
+    "color": "rgba(45,206,137,.1)",
+    "rules": [
+      {
+        "sev": "important",
+        "text": "<strong>Use BuildKit for all builds.</strong> Enable with <code>DOCKER_BUILDKIT=1</code> or in daemon config. Provides parallel builds, improved caching, and secret support."
+      },
+      {
+        "sev": "important",
+        "text": "<strong>Cache dependencies in CI.</strong> Use <code>--cache-from</code> and <code>--cache-to</code> with a registry or local cache to avoid reinstalling packages on every pipeline run."
+      },
+      {
+        "sev": "important",
+        "text": "<strong>Use --no-install-recommends</strong> with apt-get to skip recommended but unnecessary packages. Reduces image size significantly: <code>apt-get install -y --no-install-recommends pkg</code>."
+      },
+      {
+        "sev": "recommended",
+        "text": "<strong>Set resource limits in production</strong> with <code>--memory</code> and <code>--cpus</code>. Unconstrained containers can starve other services on shared hosts."
+      },
+      {
+        "sev": "recommended",
+        "text": "<strong>Use production npm/pip install flags:</strong> <code>npm ci --only=production</code>, <code>pip install --no-cache-dir</code>. Avoids dev dependencies and build caches in the final image."
+      },
+      {
+        "sev": "recommended",
+        "text": "<strong>Tag images with semantic versions AND git SHAs</strong> in CI: <code>myapp:1.2.3</code> and <code>myapp:abc1234</code>. Makes rollbacks and debugging trivial."
+      },
+      {
+        "sev": "recommended",
+        "text": "<strong>Use multi-platform builds</strong> with <code>docker buildx</code> to support linux/amd64 and linux/arm64. Essential for M-chip Mac development and ARM cloud instances."
+      }
+    ]
+  }
+]

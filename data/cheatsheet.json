@@ -1,0 +1,380 @@
+[
+  {
+    "cat": "Container Basics",
+    "items": [
+      {
+        "cmd": "docker run -d --name app nginx",
+        "desc": "Run container detached"
+      },
+      {
+        "cmd": "docker run -it ubuntu bash",
+        "desc": "Interactive shell"
+      },
+      {
+        "cmd": "docker run --rm alpine echo hi",
+        "desc": "Auto-remove on exit"
+      },
+      {
+        "cmd": "docker run -p 8080:80 nginx",
+        "desc": "Map host:container port"
+      },
+      {
+        "cmd": "docker run -e NODE_ENV=prod app",
+        "desc": "Set environment variable"
+      },
+      {
+        "cmd": "docker run --memory=512m app",
+        "desc": "Limit memory"
+      },
+      {
+        "cmd": "docker run --cpus=1.5 app",
+        "desc": "Limit CPU"
+      },
+      {
+        "cmd": "docker run --restart=always app",
+        "desc": "Always restart policy"
+      }
+    ]
+  },
+  {
+    "cat": "Container Management",
+    "items": [
+      {
+        "cmd": "docker ps",
+        "desc": "List running containers"
+      },
+      {
+        "cmd": "docker ps -a",
+        "desc": "All containers (incl. stopped)"
+      },
+      {
+        "cmd": "docker stop app",
+        "desc": "Graceful stop (SIGTERM)"
+      },
+      {
+        "cmd": "docker kill app",
+        "desc": "Force stop (SIGKILL)"
+      },
+      {
+        "cmd": "docker rm app",
+        "desc": "Remove stopped container"
+      },
+      {
+        "cmd": "docker rm -f app",
+        "desc": "Force remove running container"
+      },
+      {
+        "cmd": "docker rename old new",
+        "desc": "Rename a container"
+      },
+      {
+        "cmd": "docker pause app",
+        "desc": "Pause container processes"
+      }
+    ]
+  },
+  {
+    "cat": "Exec & Inspect",
+    "items": [
+      {
+        "cmd": "docker exec -it app sh",
+        "desc": "Shell into container"
+      },
+      {
+        "cmd": "docker exec -it app bash",
+        "desc": "Bash into container"
+      },
+      {
+        "cmd": "docker logs -f app",
+        "desc": "Follow live logs"
+      },
+      {
+        "cmd": "docker logs --tail 100 app",
+        "desc": "Last 100 log lines"
+      },
+      {
+        "cmd": "docker inspect app",
+        "desc": "Full container details (JSON)"
+      },
+      {
+        "cmd": "docker stats",
+        "desc": "Live resource usage"
+      },
+      {
+        "cmd": "docker top app",
+        "desc": "Processes in container"
+      },
+      {
+        "cmd": "docker diff app",
+        "desc": "Changed files in container"
+      }
+    ]
+  },
+  {
+    "cat": "Image Management",
+    "items": [
+      {
+        "cmd": "docker build -t myapp:v1 .",
+        "desc": "Build image with tag"
+      },
+      {
+        "cmd": "docker build --no-cache .",
+        "desc": "Build without cache"
+      },
+      {
+        "cmd": "docker build --progress=plain .",
+        "desc": "Verbose build output"
+      },
+      {
+        "cmd": "docker images",
+        "desc": "List all images"
+      },
+      {
+        "cmd": "docker image ls --filter dangling=true",
+        "desc": "List dangling images"
+      },
+      {
+        "cmd": "docker rmi myapp:v1",
+        "desc": "Remove image"
+      },
+      {
+        "cmd": "docker tag myapp:v1 myapp:latest",
+        "desc": "Tag an image"
+      },
+      {
+        "cmd": "docker history myapp:v1",
+        "desc": "Show image layers"
+      }
+    ]
+  },
+  {
+    "cat": "Registry & Push",
+    "items": [
+      {
+        "cmd": "docker login",
+        "desc": "Login to Docker Hub"
+      },
+      {
+        "cmd": "docker pull nginx:alpine",
+        "desc": "Pull image from registry"
+      },
+      {
+        "cmd": "docker push user/myapp:v1",
+        "desc": "Push image to Docker Hub"
+      },
+      {
+        "cmd": "docker save myapp | gzip > app.tar.gz",
+        "desc": "Export image to file"
+      },
+      {
+        "cmd": "docker load < app.tar.gz",
+        "desc": "Import image from file"
+      },
+      {
+        "cmd": "docker search nginx",
+        "desc": "Search Docker Hub"
+      },
+      {
+        "cmd": "docker manifest inspect nginx",
+        "desc": "Check image manifests"
+      },
+      {
+        "cmd": "docker buildx build --platform linux/amd64,linux/arm64 .",
+        "desc": "Multi-arch build"
+      }
+    ]
+  },
+  {
+    "cat": "Volumes & Storage",
+    "items": [
+      {
+        "cmd": "docker volume create mydata",
+        "desc": "Create named volume"
+      },
+      {
+        "cmd": "docker volume ls",
+        "desc": "List all volumes"
+      },
+      {
+        "cmd": "docker volume inspect mydata",
+        "desc": "Volume details"
+      },
+      {
+        "cmd": "docker volume rm mydata",
+        "desc": "Remove volume"
+      },
+      {
+        "cmd": "docker run -v mydata:/app/data app",
+        "desc": "Mount named volume"
+      },
+      {
+        "cmd": "docker run -v $(pwd):/app app",
+        "desc": "Bind mount current dir"
+      },
+      {
+        "cmd": "docker run --tmpfs /tmp app",
+        "desc": "Temp in-memory filesystem"
+      },
+      {
+        "cmd": "docker cp app:/app/file.txt .",
+        "desc": "Copy file from container"
+      }
+    ]
+  },
+  {
+    "cat": "Networking",
+    "items": [
+      {
+        "cmd": "docker network ls",
+        "desc": "List networks"
+      },
+      {
+        "cmd": "docker network create mynet",
+        "desc": "Create bridge network"
+      },
+      {
+        "cmd": "docker network create --driver overlay mynet",
+        "desc": "Create overlay network"
+      },
+      {
+        "cmd": "docker network connect mynet app",
+        "desc": "Connect container to network"
+      },
+      {
+        "cmd": "docker network disconnect mynet app",
+        "desc": "Disconnect from network"
+      },
+      {
+        "cmd": "docker network inspect mynet",
+        "desc": "Network details"
+      },
+      {
+        "cmd": "docker run --network host app",
+        "desc": "Use host networking"
+      },
+      {
+        "cmd": "docker run --network none app",
+        "desc": "No networking"
+      }
+    ]
+  },
+  {
+    "cat": "Cleanup",
+    "items": [
+      {
+        "cmd": "docker system prune",
+        "desc": "Remove unused resources"
+      },
+      {
+        "cmd": "docker system prune -af --volumes",
+        "desc": "Remove EVERYTHING unused"
+      },
+      {
+        "cmd": "docker container prune",
+        "desc": "Remove stopped containers"
+      },
+      {
+        "cmd": "docker image prune",
+        "desc": "Remove dangling images"
+      },
+      {
+        "cmd": "docker image prune -a",
+        "desc": "Remove all unused images"
+      },
+      {
+        "cmd": "docker volume prune",
+        "desc": "Remove unused volumes"
+      },
+      {
+        "cmd": "docker network prune",
+        "desc": "Remove unused networks"
+      },
+      {
+        "cmd": "docker builder prune",
+        "desc": "Clear build cache"
+      }
+    ]
+  },
+  {
+    "cat": "Docker Compose",
+    "items": [
+      {
+        "cmd": "docker compose up -d",
+        "desc": "Start services detached"
+      },
+      {
+        "cmd": "docker compose down",
+        "desc": "Stop and remove containers"
+      },
+      {
+        "cmd": "docker compose down -v",
+        "desc": "Also remove volumes"
+      },
+      {
+        "cmd": "docker compose logs -f",
+        "desc": "Follow all service logs"
+      },
+      {
+        "cmd": "docker compose ps",
+        "desc": "List services"
+      },
+      {
+        "cmd": "docker compose exec app sh",
+        "desc": "Shell into service"
+      },
+      {
+        "cmd": "docker compose build --no-cache",
+        "desc": "Rebuild all images"
+      },
+      {
+        "cmd": "docker compose pull",
+        "desc": "Pull latest images"
+      },
+      {
+        "cmd": "docker compose restart app",
+        "desc": "Restart a service"
+      },
+      {
+        "cmd": "docker compose scale app=3",
+        "desc": "Scale service replicas"
+      }
+    ]
+  },
+  {
+    "cat": "Debugging & Troubleshooting",
+    "items": [
+      {
+        "cmd": "docker events",
+        "desc": "Live Docker daemon events"
+      },
+      {
+        "cmd": "docker system df",
+        "desc": "Disk usage breakdown"
+      },
+      {
+        "cmd": "docker inspect --format=\"{{.State.Status}}\" app",
+        "desc": "Get specific field"
+      },
+      {
+        "cmd": "docker run --entrypoint sh myapp",
+        "desc": "Override entrypoint"
+      },
+      {
+        "cmd": "docker run --user root app",
+        "desc": "Override user"
+      },
+      {
+        "cmd": "docker commit app myapp:debug",
+        "desc": "Save container as image"
+      },
+      {
+        "cmd": "docker port app",
+        "desc": "Show port mappings"
+      },
+      {
+        "cmd": "docker wait app",
+        "desc": "Wait for container to exit"
+      }
+    ]
+  }
+]

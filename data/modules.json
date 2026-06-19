@@ -1,0 +1,221 @@
+[
+  {
+    "num": "01",
+    "title": "Container Fundamentals",
+    "duration": "45 min",
+    "color": "#1D63ED",
+    "topics": [
+      "What is a container? (vs VMs)",
+      "Linux namespaces and cgroups",
+      "Union filesystems (OverlayFS)",
+      "Docker architecture: client, daemon, runtime",
+      "Your first docker run command",
+      "Exploring container filesystem"
+    ],
+    "tags": [
+      "docker run",
+      "docker ps",
+      "docker exec",
+      "namespaces"
+    ]
+  },
+  {
+    "num": "02",
+    "title": "Writing Your First Dockerfile",
+    "duration": "60 min",
+    "color": "#11cdef",
+    "topics": [
+      "FROM — choosing the right base image",
+      "RUN — executing build commands",
+      "COPY vs ADD",
+      "WORKDIR — setting working directory",
+      "ENV and ARG — variables",
+      "CMD vs ENTRYPOINT",
+      "EXPOSE — documenting ports",
+      "Building and tagging images"
+    ],
+    "tags": [
+      "docker build",
+      "Dockerfile",
+      "FROM",
+      "RUN",
+      "CMD"
+    ]
+  },
+  {
+    "num": "03",
+    "title": "Image Optimization",
+    "duration": "50 min",
+    "color": "#2dce89",
+    "topics": [
+      "Understanding image layers",
+      "Layer caching strategy",
+      "Multi-stage builds deep dive",
+      "Choosing slim/alpine base images",
+      ".dockerignore — what to exclude",
+      "Analyzing image size with docker history",
+      "BuildKit and build secrets"
+    ],
+    "tags": [
+      "multi-stage",
+      "alpine",
+      ".dockerignore",
+      "BuildKit"
+    ]
+  },
+  {
+    "num": "04",
+    "title": "Docker Networking",
+    "duration": "55 min",
+    "color": "#f7941d",
+    "topics": [
+      "Bridge networking (default)",
+      "Host networking — when to use it",
+      "Container-to-container communication",
+      "DNS resolution in Docker",
+      "Creating custom networks",
+      "Overlay networks (multi-host)",
+      "Port publishing and mapping",
+      "macvlan and ipvlan"
+    ],
+    "tags": [
+      "bridge",
+      "overlay",
+      "host",
+      "DNS",
+      "ports"
+    ]
+  },
+  {
+    "num": "05",
+    "title": "Volumes & Persistent Storage",
+    "duration": "40 min",
+    "color": "#fb6340",
+    "topics": [
+      "Container filesystem layers",
+      "Named volumes vs bind mounts vs tmpfs",
+      "Volume lifecycle management",
+      "Sharing volumes between containers",
+      "Backup and restore strategies",
+      "Data migration patterns",
+      "Volume drivers (NFS, cloud)"
+    ],
+    "tags": [
+      "volumes",
+      "bind mounts",
+      "docker cp",
+      "persistence"
+    ]
+  },
+  {
+    "num": "06",
+    "title": "Docker Compose",
+    "duration": "70 min",
+    "color": "#5e72e4",
+    "topics": [
+      "compose.yaml structure and syntax",
+      "Defining services, networks, volumes",
+      "Environment variables and .env files",
+      "depends_on and health checks",
+      "Service scaling",
+      "Compose profiles (dev/prod)",
+      "Override files (compose.override.yaml)",
+      "Compose in CI/CD"
+    ],
+    "tags": [
+      "compose",
+      "services",
+      "healthcheck",
+      "depends_on"
+    ]
+  },
+  {
+    "num": "07",
+    "title": "Container Security",
+    "duration": "65 min",
+    "color": "#f5365c",
+    "topics": [
+      "Running as non-root (USER directive)",
+      "Read-only filesystems",
+      "Dropping Linux capabilities",
+      "Seccomp and AppArmor profiles",
+      "Image scanning (Trivy, Snyk)",
+      "Secrets management (not ENV vars!)",
+      "Network security and isolation",
+      "Docker bench security"
+    ],
+    "tags": [
+      "security",
+      "USER",
+      "--cap-drop",
+      "Trivy",
+      "secrets"
+    ]
+  },
+  {
+    "num": "08",
+    "title": "Registry & Image Distribution",
+    "duration": "45 min",
+    "color": "#11cdef",
+    "topics": [
+      "Docker Hub — pushing and pulling",
+      "GitHub Container Registry (GHCR)",
+      "Amazon ECR setup and auth",
+      "Building a private registry",
+      "Image signing with Cosign",
+      "Multi-platform builds (buildx)",
+      "Image promotion strategies"
+    ],
+    "tags": [
+      "docker push",
+      "ECR",
+      "GHCR",
+      "buildx",
+      "cosign"
+    ]
+  },
+  {
+    "num": "09",
+    "title": "CI/CD with Docker",
+    "duration": "60 min",
+    "color": "#2dce89",
+    "topics": [
+      "GitHub Actions Docker pipeline",
+      "Build caching in CI (--cache-from)",
+      "Multi-stage builds for testing",
+      "Automated image scanning",
+      "Tagging strategies (semver, SHA)",
+      "Deploying to cloud (ECS, Cloud Run)",
+      "Docker in Docker (DinD) patterns"
+    ],
+    "tags": [
+      "GitHub Actions",
+      "CI/CD",
+      "caching",
+      "deployment"
+    ]
+  },
+  {
+    "num": "10",
+    "title": "Production Patterns & Kubernetes",
+    "duration": "75 min",
+    "color": "#f7941d",
+    "topics": [
+      "Container resource limits (--memory, --cpus)",
+      "Health checks and restart policies",
+      "Logging drivers and log aggregation",
+      "Container orchestration concepts",
+      "Migrating from Compose to Kubernetes",
+      "Pod specs vs Compose services",
+      "Container runtime (containerd, CRI-O)",
+      "The road to CKA"
+    ],
+    "tags": [
+      "production",
+      "k8s",
+      "resources",
+      "logging",
+      "CKA"
+    ]
+  }
+]

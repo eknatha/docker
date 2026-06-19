@@ -1,0 +1,121 @@
+[
+  {
+    "num": "01",
+    "title": "Orchestration",
+    "pct": 25,
+    "color": "#1D63ED",
+    "bg": "rgba(29,99,237,.15)",
+    "topics": [
+      "Complete the setup of a swarm mode cluster with managers and workers",
+      "State the differences between running a container vs a service",
+      "Demonstrate steps to lock a swarm cluster and interpret a locked swarm scenario",
+      "Extend the instructions to run individual containers as replicated services",
+      "Interpret the output of docker inspect on a running service",
+      "Convert an application deployment into a stack file using a YAML compose file",
+      "Manipulate a running stack of services including scaling, updating, rolling back",
+      "Increase number of replicas and add networks/ports to a service",
+      "Mount volumes in Docker services and tasks",
+      "Illustrate running a replicated vs global service",
+      "Identify troubleshooting steps for services running in swarm",
+      "Describe how to use templates with docker service create"
+    ]
+  },
+  {
+    "num": "02",
+    "title": "Image Creation, Management & Registry",
+    "pct": 20,
+    "color": "#11cdef",
+    "bg": "rgba(17,205,239,.12)",
+    "topics": [
+      "Describe Dockerfile options ADD, COPY, ENV, EXPOSE, FROM, HEALTHCHECK, LABEL, ONBUILD, RUN, SHELL, STOPSIGNAL, USER, VOLUME, WORKDIR",
+      "Describe and demonstrate how to create an efficient image via a Dockerfile",
+      "Describe and demonstrate how to use CLI commands to manage images (list, delete, prune, rmi)",
+      "Inspect images and report specific attributes using filter and format",
+      "Demonstrate pulling and deleting images from a registry",
+      "Describe how image layers work",
+      "Modify an image to a single layer and deploy it",
+      "Describe how to configure a local registry",
+      "Describe and demonstrate how to log into and out of a registry",
+      "Describe and demonstrate how to tag an image",
+      "Describe and demonstrate how to push an image to a registry",
+      "Describe how image deletion works and when it frees disk space",
+      "Demonstrate how to show the main parts of an image spec"
+    ]
+  },
+  {
+    "num": "03",
+    "title": "Installation & Configuration",
+    "pct": 15,
+    "color": "#2dce89",
+    "bg": "rgba(45,206,137,.12)",
+    "topics": [
+      "Describe sizing requirements prior to installation",
+      "Set up repo, select a storage driver, and complete installation on multiple platforms",
+      "Configure logging drivers (splunk, journald, etc.)",
+      "Describe and demonstrate how to configure Docker runtime options",
+      "Setup swarm, configure managers, add nodes, and setup the backup schedule",
+      "Create and manage user and teams in DTR",
+      "Interpret errors to troubleshoot installation issues without assistance",
+      "Describe the process of upgrading Docker engine",
+      "Describe and demonstrate the steps to deploy the Docker engine, UCP, and DTR on AWS and on-premises",
+      "Describe and demonstrate how to configure backups for UCP and DTR"
+    ]
+  },
+  {
+    "num": "04",
+    "title": "Networking",
+    "pct": 15,
+    "color": "#f7941d",
+    "bg": "rgba(247,148,29,.12)",
+    "topics": [
+      "Create a Docker bridge network for a developer to use for their containers",
+      "Troubleshoot container and engine logs to understand network connectivity issues",
+      "Publish a port so that an application is accessible externally",
+      "Identify which IP and port a container is externally accessible on",
+      "Describe the different types and use cases for the built-in network drivers",
+      "Understand the Container Network Model and how it interfaces with the Docker engine",
+      "Configure Docker to use external DNS",
+      "Use Docker to load balance HTTP/HTTPs traffic to an application",
+      "Understand and describe the types of traffic that flow between the Docker engine, the UCP, and DTR",
+      "Deploy a service on a Docker overlay network",
+      "Describe the difference between host and ingress port publishing mode"
+    ]
+  },
+  {
+    "num": "05",
+    "title": "Security",
+    "pct": 15,
+    "color": "#f5365c",
+    "bg": "rgba(245,54,92,.12)",
+    "topics": [
+      "Describe the process of signing an image and enable Docker Content Trust",
+      "Demonstrate that an image passes a security scan",
+      "Enable Docker Content Trust",
+      "Configure RBAC in UCP",
+      "Integrate UCP with LDAP/AD",
+      "Demonstrate creation of UCP client bundles",
+      "Describe default engine security: namespaces, cgroups, and seccomp profiles",
+      "Describe swarm default security: PKI, certificate rotation, mutual TLS, locked swarms",
+      "Describe MTLS: which certs are used, which are mandatory and optional",
+      "Identity roles in the UCP GUI",
+      "Describe the difference between UCP workers and managers"
+    ]
+  },
+  {
+    "num": "06",
+    "title": "Storage & Volumes",
+    "pct": 10,
+    "color": "#534AB7",
+    "bg": "rgba(83,74,183,.12)",
+    "topics": [
+      "State which graph driver should be used on which OS",
+      "Demonstrate how to configure devicemapper",
+      "Compare object storage to block storage and explain which one is preferable when available",
+      "Summarize how an application is composed of layers and where those layers reside on the filesystem",
+      "Describe how volumes are used with Docker for persistent storage",
+      "Identify the steps you would take to clean up unused images, containers, and volumes",
+      "Demonstrate how storage can be used across cluster nodes",
+      "Identify the correct graph drivers to uses with various operating systems"
+    ]
+  }
+]

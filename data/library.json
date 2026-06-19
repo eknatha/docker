@@ -1,0 +1,129 @@
+[
+  {
+    "lang": "Node.js",
+    "category": "Backend",
+    "color": "#68a063",
+    "bg": "rgba(104,160,99,.15)",
+    "title": "Node.js Express API",
+    "size": "~120MB → ~45MB",
+    "tags": [
+      "multi-stage",
+      "alpine",
+      "non-root",
+      "healthcheck"
+    ],
+    "notes": "<strong>Key decisions:</strong> Alpine base cuts 700MB+. package*.json copied before source for cache efficiency. Non-root <code>node</code> user. dumb-init handles signals correctly.",
+    "code": "# ── Stage 1: Dependencies ──────────────────\nFROM node:20-alpine AS deps\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci --only=production\n\n# ── Stage 2: Build ──────────────────────────\nFROM node:20-alpine AS build\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci\nCOPY . .\nRUN npm run build\n\n# ── Stage 3: Production ─────────────────────\nFROM node:20-alpine AS runner\nRUN apk add --no-cache dumb-init\nWORKDIR /app\nENV NODE_ENV=production\nCOPY --from=deps /app/node_modules ./node_modules\nCOPY --from=build /app/dist ./dist\nCOPY package.json ./\nUSER node\nEXPOSE 3000\nHEALTHCHECK --interval=30s --timeout=5s --start-period=10s \\\n  CMD wget -qO- http://localhost:3000/health || exit 1\nENTRYPOINT [\"dumb-init\",\"--\"]\nCMD [\"node\",\"dist/server.js\"]"
+  },
+  {
+    "lang": "Python",
+    "category": "Backend",
+    "color": "#3572a5",
+    "bg": "rgba(53,114,165,.15)",
+    "title": "FastAPI / Django App",
+    "size": "~900MB → ~160MB",
+    "tags": [
+      "multi-stage",
+      "slim",
+      "non-root",
+      "virtualenv"
+    ],
+    "notes": "<strong>Key decisions:</strong> Virtual environment in /venv avoids system package conflicts. PYTHONDONTWRITEBYTECODE and PYTHONUNBUFFERED are essential for containers. Copies only the venv to final stage.",
+    "code": "# ── Stage 1: Builder ────────────────────────\nFROM python:3.12-slim AS builder\nWORKDIR /app\nENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1\nRUN python -m venv /venv\nENV PATH=\"/venv/bin:$PATH\"\nCOPY requirements.txt .\nRUN pip install --no-cache-dir --upgrade pip \\\n    && pip install --no-cache-dir -r requirements.txt\n\n# ── Stage 2: Production ─────────────────────\nFROM python:3.12-slim AS runner\nWORKDIR /app\nENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 \\\n    PATH=\"/venv/bin:$PATH\"\nCOPY --from=builder /venv /venv\nCOPY . .\nRUN useradd --no-create-home --shell /bin/false appuser\nUSER appuser\nEXPOSE 8000\nHEALTHCHECK --interval=30s --timeout=5s \\\n  CMD python -c \"import urllib.request; urllib.request.urlopen('http://localhost:8000/health')\"\nCMD [\"uvicorn\",\"app.main:app\",\"--host\",\"0.0.0.0\",\"--port\",\"8000\"]"
+  },
+  {
+    "lang": "Go",
+    "category": "Backend",
+    "color": "#00add8",
+    "bg": "rgba(0,173,216,.15)",
+    "title": "Go REST API",
+    "size": "~800MB → ~12MB",
+    "tags": [
+      "scratch",
+      "static binary",
+      "CGO_ENABLED=0",
+      "distroless"
+    ],
+    "notes": "<strong>Key decisions:</strong> Go compiles to a single static binary. FROM scratch produces a ~12MB image with zero attack surface — no shell, no OS utilities. CGO_ENABLED=0 ensures no libc dependency.",
+    "code": "# ── Stage 1: Build ──────────────────────────\nFROM golang:1.22-alpine AS builder\nWORKDIR /app\nENV CGO_ENABLED=0 GOOS=linux GOARCH=amd64\nCOPY go.mod go.sum ./\nRUN go mod download\nCOPY . .\nRUN go build \\\n    -ldflags=\"-w -s\" \\\n    -o /app/server \\\n    ./cmd/server\n\n# ── Stage 2: Production (scratch) ───────────\nFROM scratch AS runner\nCOPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/\nCOPY --from=builder /app/server /server\nEXPOSE 8080\nHEALTHCHECK --interval=30s --timeout=3s \\\n  CMD [\"/server\",\"-health\"]\nENTRYPOINT [\"/server\"]"
+  },
+  {
+    "lang": "Next.js",
+    "category": "Frontend",
+    "color": "#000000",
+    "bg": "rgba(150,150,150,.12)",
+    "title": "Next.js App (standalone)",
+    "size": "~1.2GB → ~180MB",
+    "tags": [
+      "standalone output",
+      "multi-stage",
+      "sharp"
+    ],
+    "notes": "<strong>Key decisions:</strong> Next.js standalone output copies only needed files. Set <code>output: \"standalone\"</code> in next.config.js first. Sharp for image optimization must be copied from builder.",
+    "code": "# ── Stage 1: Dependencies ──────────────────\nFROM node:20-alpine AS deps\nRUN apk add --no-cache libc6-compat\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci\n\n# ── Stage 2: Build ──────────────────────────\nFROM node:20-alpine AS builder\nWORKDIR /app\nCOPY --from=deps /app/node_modules ./node_modules\nCOPY . .\nENV NEXT_TELEMETRY_DISABLED=1\nRUN npm run build\n\n# ── Stage 3: Production ─────────────────────\nFROM node:20-alpine AS runner\nWORKDIR /app\nENV NODE_ENV=production NEXT_TELEMETRY_DISABLED=1\nRUN addgroup --system nodejs && adduser --system nextjs\nCOPY --from=builder /app/public ./public\nCOPY --from=builder --chown=nextjs:nodejs \\\n  /app/.next/standalone ./\nCOPY --from=builder --chown=nextjs:nodejs \\\n  /app/.next/static ./.next/static\nUSER nextjs\nEXPOSE 3000\nENV PORT=3000 HOSTNAME=\"0.0.0.0\"\nCMD [\"node\",\"server.js\"]"
+  },
+  {
+    "lang": "Java",
+    "category": "Backend",
+    "color": "#b07219",
+    "bg": "rgba(176,114,25,.15)",
+    "title": "Spring Boot (JRE 21)",
+    "size": "~800MB → ~220MB",
+    "tags": [
+      "layered jar",
+      "jre21",
+      "multi-stage",
+      "non-root"
+    ],
+    "notes": "<strong>Key decisions:</strong> Spring Boot layered jars split deps/app for better caching. JRE (not JDK) in production stage cuts 200MB+. Application layer changes most often — placed last.",
+    "code": "# ── Stage 1: Extract layers ─────────────────\nFROM eclipse-temurin:21-jdk-alpine AS builder\nWORKDIR /app\nCOPY target/*.jar app.jar\nRUN java -Djarmode=layertools -jar app.jar extract\n\n# ── Stage 2: Production ─────────────────────\nFROM eclipse-temurin:21-jre-alpine AS runner\nWORKDIR /app\nRUN addgroup -S spring && adduser -S spring -G spring\n# Copy layers in order of change frequency (least → most)\nCOPY --from=builder /app/dependencies/ ./\nCOPY --from=builder /app/spring-boot-loader/ ./\nCOPY --from=builder /app/snapshot-dependencies/ ./\nCOPY --from=builder /app/application/ ./\nUSER spring\nEXPOSE 8080\nHEALTHCHECK --interval=30s --timeout=5s \\\n  CMD wget -qO- http://localhost:8080/actuator/health || exit 1\nENTRYPOINT [\"java\",\"org.springframework.boot.loader.JarLauncher\"]"
+  },
+  {
+    "lang": "Rust",
+    "category": "Backend",
+    "color": "#dea584",
+    "bg": "rgba(222,165,132,.15)",
+    "title": "Rust Axum API",
+    "size": "~3GB → ~15MB",
+    "tags": [
+      "distroless",
+      "static",
+      "musl",
+      "scratch"
+    ],
+    "notes": "<strong>Key decisions:</strong> Rust target x86_64-unknown-linux-musl produces a fully static binary. cargo-chef caches dependencies layer separately — huge build time savings on code changes.",
+    "code": "# ── Stage 1: Planner ────────────────────────\nFROM rust:1.78-alpine AS planner\nRUN apk add --no-cache musl-dev\nWORKDIR /app\nRUN cargo install cargo-chef\nCOPY . .\nRUN cargo chef prepare --recipe-path recipe.json\n\n# ── Stage 2: Cache deps ─────────────────────\nFROM rust:1.78-alpine AS cacher\nRUN apk add --no-cache musl-dev\nRUN cargo install cargo-chef\nWORKDIR /app\nCOPY --from=planner /app/recipe.json recipe.json\nRUN cargo chef cook --release --recipe-path recipe.json\n\n# ── Stage 3: Build ──────────────────────────\nFROM rust:1.78-alpine AS builder\nRUN apk add --no-cache musl-dev\nWORKDIR /app\nCOPY . .\nCOPY --from=cacher /app/target target\nCOPY --from=cacher /usr/local/cargo /usr/local/cargo\nRUN cargo build --release\n\n# ── Stage 4: Production (distroless) ────────\nFROM gcr.io/distroless/static-debian12 AS runner\nCOPY --from=builder /app/target/release/server /server\nEXPOSE 8080\nCMD [\"/server\"]"
+  },
+  {
+    "lang": "PHP",
+    "category": "Backend",
+    "color": "#4f5d95",
+    "bg": "rgba(79,93,149,.15)",
+    "title": "Laravel (PHP-FPM + Nginx)",
+    "size": "~500MB",
+    "tags": [
+      "php-fpm",
+      "nginx",
+      "composer",
+      "opcache"
+    ],
+    "notes": "<strong>Key decisions:</strong> PHP-FPM with a separate Nginx container is the production pattern. Composer installs without dev dependencies. OPcache enabled for performance.",
+    "code": "# ── Stage 1: Composer deps ──────────────────\nFROM composer:2 AS vendor\nWORKDIR /app\nCOPY composer.json composer.lock ./\nRUN composer install \\\n    --no-dev \\\n    --no-interaction \\\n    --prefer-dist \\\n    --optimize-autoloader \\\n    --no-scripts\n\n# ── Stage 2: PHP-FPM app ────────────────────\nFROM php:8.3-fpm-alpine AS runner\nRUN apk add --no-cache \\\n    libpng-dev libzip-dev \\\n    && docker-php-ext-install \\\n       pdo_mysql zip gd opcache\nCOPY docker/php/opcache.ini /usr/local/etc/php/conf.d/\nCOPY docker/php/www.conf /usr/local/etc/php-fpm.d/www.conf\nWORKDIR /var/www/html\nCOPY --from=vendor /app/vendor ./vendor\nCOPY . .\nRUN chown -R www-data:www-data storage bootstrap/cache\nUSER www-data\nEXPOSE 9000\nHEALTHCHECK --interval=30s --timeout=5s \\\n  CMD php-fpm -t || exit 1"
+  },
+  {
+    "lang": "React",
+    "category": "Frontend",
+    "color": "#61dafb",
+    "bg": "rgba(97,218,251,.12)",
+    "title": "React (Vite + Nginx)",
+    "size": "~1GB → ~25MB",
+    "tags": [
+      "nginx",
+      "static",
+      "multi-stage",
+      "vite"
+    ],
+    "notes": "<strong>Key decisions:</strong> Node only needed at build time — final image is just Nginx serving static files. Custom nginx.conf enables gzip, SPA routing (try_files), and security headers.",
+    "code": "# ── Stage 1: Build ──────────────────────────\nFROM node:20-alpine AS builder\nWORKDIR /app\nCOPY package*.json ./\nRUN npm ci\nCOPY . .\nRUN npm run build\n\n# ── Stage 2: Serve with Nginx ───────────────\nFROM nginx:1.25-alpine AS runner\nCOPY --from=builder /app/dist /usr/share/nginx/html\nCOPY docker/nginx.conf /etc/nginx/conf.d/default.conf\n# nginx.conf should include:\n#   try_files $uri $uri/ /index.html; (SPA routing)\n#   gzip on;\n#   security headers (X-Frame-Options, etc.)\nEXPOSE 80\nHEALTHCHECK --interval=30s --timeout=3s \\\n  CMD wget -qO- http://localhost/health || exit 1\nCMD [\"nginx\",\"-g\",\"daemon off;\"]"
+  }
+]
